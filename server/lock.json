@@ -1,0 +1,52 @@
+{
+    "memo": "95fa0611cd35e8391c2f788512f550dc20f9a83f75ff13c0e42594fa9748339a",
+    "projects": [
+        {
+            "name": "github.com/gin-gonic/gin",
+            "revision": "3c3526f1f1935955a3e54fd2c0d8468802ee502e",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/golang/protobuf",
+            "branch": "master",
+            "revision": "2bba0603135d7d7f5cb73b2125beeda19c09f4ef",
+            "packages": [
+                "proto"
+            ]
+        },
+        {
+            "name": "github.com/manucorporat/sse",
+            "branch": "master",
+            "revision": "ee05b128a739a0fb76c7ebd3ae4810c1de808d6d",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "golang.org/x/net",
+            "branch": "master",
+            "revision": "d1e1b351919c6738fdeb9893d5c998b161464f0c",
+            "packages": [
+                "context"
+            ]
+        },
+        {
+            "name": "gopkg.in/go-playground/validator.v8",
+            "version": "v8.18.1",
+            "revision": "5f57d2222ad794d0dffb07e664ea05e2ee07d60c",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "gopkg.in/yaml.v2",
+            "branch": "v2",
+            "revision": "cd8b52f8269e0feb286dfeef29f8fe4d5b397e0b",
+            "packages": [
+                "."
+            ]
+        }
+    ]
+}
