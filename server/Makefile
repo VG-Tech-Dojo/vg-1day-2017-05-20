@@ -1,4 +1,6 @@
-GLIDE = $(shell which glide)
+GOOS = darwin
+GOARCH = amd64
+VERSION = $(shell git rev-parse HEAD)
 
 all: deps
 
@@ -8,6 +10,10 @@ deps:
 install:
 	dep ensure
 	go install    # cache compiled packages
+
+build:
+	mkdir -p builds
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o builds/server -ldflags "-X=main.version=$(VERSION)" server.go
 
 clean: clean_vendor
 
