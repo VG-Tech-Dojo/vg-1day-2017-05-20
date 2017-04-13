@@ -12,8 +12,7 @@ install:
 	go install    # cache compiled packages
 
 build:
-	mkdir -p builds
-	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o builds/server -ldflags "-X=main.version=$(VERSION)" server.go
+	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
 
 clean: clean_vendor
 
