@@ -2,6 +2,9 @@
     "dependencies": {
         "github.com/gin-gonic/gin": {
             "revision": "3c3526f1f1935955a3e54fd2c0d8468802ee502e"
+        },
+        "github.com/mattn/go-sqlite3": {
+            "revision": "v1.2.0"
         }
     }
 }

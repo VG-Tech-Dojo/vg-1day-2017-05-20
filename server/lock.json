@@ -1,14 +1,6 @@
 {
-    "memo": "4d4d2ab25c4bdd5fdc7526ed3e6c516114b9a43ecc52149081eb4fb91233378e",
+    "memo": "7470aca4201f78b411f4c48d896082d46016a7e760c537c49cd871cb29f20e2a",
     "projects": [
-        {
-            "name": "github.com/dgrijalva/jwt-go",
-            "version": "v3.0.0",
-            "revision": "d2709f9f1f31ebcda9651b03077758c1f3a0018c",
-            "packages": [
-                "."
-            ]
-        },
         {
             "name": "github.com/gin-gonic/gin",
             "revision": "3c3526f1f1935955a3e54fd2c0d8468802ee502e",
@@ -29,8 +21,7 @@
             "version": "v3.0.3",
             "revision": "8d504c1b699c757b267255c53b3e5219f9974abc",
             "packages": [
-                ".",
-                "middleware"
+                "."
             ]
         },
         {
@@ -38,10 +29,8 @@
             "version": "v0.2.0",
             "revision": "9cedb429ffbe71a32a3ae7c65fd109cb7ae07804",
             "packages": [
-                "bytes",
                 "color",
-                "log",
-                "random"
+                "log"
             ]
         },
         {
@@ -64,6 +53,14 @@
             "name": "github.com/mattn/go-isatty",
             "version": "v0.0.2",
             "revision": "fc9e8d8ef48496124e79ae0df75490096eccf6fe",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/mattn/go-sqlite3",
+            "version": "v1.2.0",
+            "revision": "ca5e3819723d8eeaf170ad510e7da1d6d2e94a08",
             "packages": [
                 "."
             ]
