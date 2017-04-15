@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <title>vg-1day-2017</title>
+</head>
+<body>
+  <div id="app">
+    <div v-for="message in messages">
+      <message
+        :user="message.user"
+        :text="message.text"
+      ></message>
+    </div>
+    <div>
+      <input v-model="newMessage.user" placeholder="ユーザー名">
+      <input v-model="newMessage.text" placeholder="">
+      <button v-on:click="sendMessage">Send</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="javascript/app.js"></script>
+</body>
+</html>
