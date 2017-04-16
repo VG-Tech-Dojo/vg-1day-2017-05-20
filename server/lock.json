@@ -18,16 +18,16 @@
         },
         {
             "name": "github.com/labstack/echo",
-            "version": "v3.0.2",
-            "revision": "cd2530ea098106338b888f4fb66e966efa2fd75e",
+            "version": "v3.0.3",
+            "revision": "8d504c1b699c757b267255c53b3e5219f9974abc",
             "packages": [
                 "."
             ]
         },
         {
             "name": "github.com/labstack/gommon",
-            "version": "v0.1.0",
-            "revision": "2d272df536d051e737aea353b86c979d6e88bce0",
+            "version": "v0.2.0",
+            "revision": "9cedb429ffbe71a32a3ae7c65fd109cb7ae07804",
             "packages": [
                 "color",
                 "log"
@@ -65,22 +65,6 @@
             ]
         },
         {
-            "name": "github.com/miekg/dns",
-            "branch": "master",
-            "revision": "6ebcb714d36901126ee2807031543b38c56de963",
-            "packages": [
-                "."
-            ]
-        },
-        {
-            "name": "github.com/rsc/letsencrypt",
-            "branch": "master",
-            "revision": "76104d26167d38b6a0010f42bfc8ec5487742e8b",
-            "packages": [
-                "."
-            ]
-        },
-        {
             "name": "github.com/tylerb/graceful",
             "version": "v1.2.15",
             "revision": "4654dfbb6ad53cb5e27f37d99b02e16c1872fbbb",
@@ -105,28 +89,19 @@
             ]
         },
         {
-            "name": "github.com/xenolf/lego",
-            "version": "v0.3.1",
-            "revision": "96a24777ffb3c6a25f6bb0b3a7997969c1fcde4b",
-            "packages": [
-                "acme"
-            ]
-        },
-        {
             "name": "golang.org/x/crypto",
             "branch": "master",
-            "revision": "ed779e1bec0180cdfce8135ca6558067b388777b",
+            "revision": "cbc3d0884eac986df6e78a039b8792e869bff863",
             "packages": [
-                "ocsp"
+                "acme/autocert"
             ]
         },
         {
             "name": "golang.org/x/net",
             "branch": "master",
-            "revision": "d1e1b351919c6738fdeb9893d5c998b161464f0c",
+            "revision": "5602c733f70afc6dcec6766be0d5034d4c4f14de",
             "packages": [
-                "context",
-                "publicsuffix"
+                "context"
             ]
         },
         {
@@ -138,34 +113,9 @@
             ]
         },
         {
-            "name": "golang.org/x/text",
-            "branch": "master",
-            "revision": "f4b4367115ec2de254587813edaa901bc1c723a8",
-            "packages": [
-                "secure/bidirule",
-                "unicode/norm"
-            ]
-        },
-        {
-            "name": "golang.org/x/time",
-            "branch": "master",
-            "revision": "f51c12702a4d776e4c1fa9b0fabab841babae631",
-            "packages": [
-                "rate"
-            ]
-        },
-        {
             "name": "gopkg.in/go-playground/validator.v8",
             "version": "v8.18.1",
             "revision": "5f57d2222ad794d0dffb07e664ea05e2ee07d60c",
-            "packages": [
-                "."
-            ]
-        },
-        {
-            "name": "gopkg.in/square/go-jose.v1",
-            "version": "v1.1.0",
-            "revision": "aa2e30fdd1fe9dd3394119af66451ae790d50e0d",
             "packages": [
                 "."
             ]
