@@ -16,7 +16,7 @@ func MessagesAll() ([]*Message, error) {
 			Value: "fuga",
 		},
 		&Message{
-			ID:    2,
+			ID:    3,
 			Value: "piyo",
 		},
 	}, nil

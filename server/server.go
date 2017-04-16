@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/saxsir/vg-1day-2017/server/controller"
 )
 
 // Server is whole server implementation for this app
@@ -27,6 +28,10 @@ func (s *Server) Init(dbconf, env string) error {
 		return err
 	}
 	s.db = db
+
+	message := &controller.Message{}
+	s.Engine.GET("/", message.Root)
+
 	return nil
 }
 
