@@ -4,8 +4,8 @@ import (
 	"database/sql"
 	"net/http"
 
+	"github.com/VG-Tech-Dojo/vg-1day-2017/server/model"
 	"github.com/gin-gonic/gin"
-	"github.com/saxsir/vg-1day-2017/server/model"
 )
 
 // Message is controller for requests to messages

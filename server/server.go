@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"log"
 
+	"github.com/VG-Tech-Dojo/vg-1day-2017/server/controller"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
-	"github.com/saxsir/vg-1day-2017/server/controller"
 )
 
 // Server is whole server implementation for this app
