@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"net/http"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017/server/controller"
 	"github.com/gin-gonic/gin"
@@ -31,7 +32,13 @@ func (s *Server) Init() error {
 
 	// routing
 	message := &controller.Message{DB: db}
-	s.Engine.GET("/", message.Root)
+	s.Engine.LoadHTMLGlob("./templates/*")
+
+	s.Engine.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
+	})
+	s.Engine.GET("/message", message.Root)
+	s.Engine.Static("/assets", "./assets")
 
 	return nil
 }
