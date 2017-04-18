@@ -4,6 +4,10 @@ GOOS = darwin
 GOARCH = amd64
 VERSION = $(shell git rev-parse HEAD)
 
+server: install
+	go run server.go
+
+
 ## Install dependency tools
 deps:
 	which make2help || go get -u github.com/Songmu/make2help/cmd/make2help
