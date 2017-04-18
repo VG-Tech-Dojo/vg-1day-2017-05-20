@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,10 +9,12 @@ import (
 )
 
 // Message is controller for requests to messages
-type Message struct{}
+type Message struct {
+	DB *sql.DB
+}
 
 func (m *Message) Root(c *gin.Context) {
-	messages, err := model.MessagesAll()
+	messages, err := model.MessagesAll(m.DB)
 	if err != nil {
 		c.String(500, "%s", err)
 		return

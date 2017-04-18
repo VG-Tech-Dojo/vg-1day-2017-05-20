@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"flag"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -22,14 +21,16 @@ func NewServer() *Server {
 	}
 }
 
-func (s *Server) Init(dbconf, env string) error {
+func (s *Server) Init() error {
+	// open db connection
 	db, err := sql.Open("sqlite3", "./sample.db")
 	if err != nil {
 		return err
 	}
 	s.db = db
 
-	message := &controller.Message{}
+	// routing
+	message := &controller.Message{DB: db}
 	s.Engine.GET("/", message.Root)
 
 	return nil
@@ -44,14 +45,10 @@ func (s *Server) Run() {
 }
 
 func main() {
-	var (
-		dbconf = flag.String("dbconf", "dbconfig.yml", "database configuration file.")
-		env    = flag.String("env", "development", "application envirionment (production, development etc.)")
-	)
-	flag.Parse()
+	// TODO: dbのconfigとかenvとか引数で受け取るようにする
 
 	s := NewServer()
-	if err := s.Init(*dbconf, *env); err != nil {
+	if err := s.Init(); err != nil {
 		log.Fatalf("fail to start server: ", err)
 	}
 	defer s.Close()
