@@ -2,8 +2,11 @@
   "version": 0,
   "reviewers": [
     "ara-ta3",
-    "saxsir"
-  ],
-  "auto_merge.enabled": true,
-  "auto_merge.delete_branch": true
+    "saxsir",
+    "hironomiu",
+    "Gaia-Murata",
+    "yuk-vg",
+    "yang-wei",
+    "nkws"
+  ]
 }
