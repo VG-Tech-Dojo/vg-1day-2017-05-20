@@ -3,8 +3,8 @@ package model
 import "database/sql"
 
 type Message struct {
-	ID    int64  `json:"id"`
-	Value string `json:"value"`
+	ID   int64  `json:"id"`
+	Body string `json:"body"`
 }
 
 func MessagesAll(db *sql.DB) ([]*Message, error) {
@@ -17,7 +17,7 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	var ms []*Message
 	for rows.Next() {
 		m := &Message{}
-		if err := rows.Scan(&m.ID, &m.Value); err != nil {
+		if err := rows.Scan(&m.ID, &m.Body); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)
