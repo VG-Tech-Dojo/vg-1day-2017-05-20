@@ -3,15 +3,16 @@
 GOOS = darwin
 GOARCH = amd64
 VERSION = $(shell git rev-parse HEAD)
+ENV = test
 
 server: install
 	go run server.go
-
 
 ## Install dependency tools
 deps:
 	which make2help || go get -u github.com/Songmu/make2help/cmd/make2help
 	which dep || go get -u github.com/golang/dep/...
+	which sql-migrate || go get -u github.com/rubenv/sql-migrate/...
 
 ## Install dependency packages, cache compiled packages
 install: deps
@@ -31,3 +32,15 @@ clean_vendor:
 ## Show help
 help:
 	@make2help -all
+
+## Migrate db schema
+migrate_up:
+	sql-migrate up -env=$(ENV)
+
+## Migrate db schema(dryrun)
+migrate_dryrun:
+	sql-migrate up -env=$(ENV) -dryrun
+
+## Show migration status
+migrate_status:
+	sql-migrate status -env=$(ENV)

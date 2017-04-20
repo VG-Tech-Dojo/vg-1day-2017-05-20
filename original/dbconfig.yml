@@ -1,0 +1,11 @@
+# loc=auto is used by go-sqlite3
+# see. https://github.com/mattn/go-sqlite3
+development:
+  dialect: sqlite3
+  datasource: dev.db?loc=auto
+  dir: ./migrations
+
+test:
+  dialect: sqlite3
+  datasource: test.db?loc=auto
+  dir: ./migrations
