@@ -7,6 +7,7 @@ type Message struct {
 	Body string `json:"body"`
 }
 
+// MessagesAlll は全てのメッセージを返します
 func MessagesAll(db *sql.DB) ([]*Message, error) {
 	rows, err := db.Query(`select * from message`)
 	if err != nil {
@@ -27,4 +28,15 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	}
 
 	return ms, nil
+}
+
+// MessageByID は指定されたIDのメッセージを1つ返します
+func MessageByID(db *sql.DB, id string) (*Message, error) {
+	m := &Message{}
+
+	if err := db.QueryRow(`select id, body from message where id = ?`, id).Scan(&m.ID, &m.Body); err != nil {
+		return nil, err
+	}
+
+	return m, nil
 }
