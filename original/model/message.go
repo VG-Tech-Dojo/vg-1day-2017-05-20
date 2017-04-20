@@ -9,7 +9,7 @@ type Message struct {
 
 // MessagesAlll は全てのメッセージを返します
 func MessagesAll(db *sql.DB) ([]*Message, error) {
-	rows, err := db.Query(`select * from message`)
+	rows, err := db.Query(`select id, body from message`)
 	if err != nil {
 		return nil, err
 	}
@@ -40,3 +40,5 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 
 	return m, nil
 }
+
+//
