@@ -41,4 +41,9 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 	return m, nil
 }
 
-//
+func (m *Message) Insert(db *sql.DB) error {
+	if _, err := db.Exec(`insert into message (body) values (?)`, m.Body); err != nil {
+		return err
+	}
+	return nil
+}

@@ -37,5 +37,11 @@ func (m *Message) GetByID(c *gin.Context) {
 }
 
 func (m *Message) Create(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
+	msg := &model.Message{
+		Body: "hoge",
+	}
+	if err := msg.Insert(m.DB); err != nil {
+		c.String(500, "%s", err)
+	}
+	c.String(http.StatusOK, "created")
 }
