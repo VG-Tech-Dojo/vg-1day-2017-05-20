@@ -37,9 +37,11 @@ func (m *Message) GetByID(c *gin.Context) {
 }
 
 func (m *Message) Create(c *gin.Context) {
-	msg := &model.Message{
-		Body: "hoge",
+	var msg model.Message
+	if err := c.BindJSON(&msg); err != nil {
+		c.String(500, "%s", err)
 	}
+
 	if err := msg.Insert(m.DB); err != nil {
 		c.String(500, "%s", err)
 	}
