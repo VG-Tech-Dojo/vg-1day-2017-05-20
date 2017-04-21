@@ -1,5 +1,9 @@
 .DEFAULT_GOAL := help
+backgroud_option=-d
 
+docker_server: docker_build docker_up
+
+docker_clean: docker_stop docker_rm 
 
 help:
 	@echo docker_build:	Build the docker container
@@ -12,7 +16,7 @@ docker_build:
 	docker-compose build
 
 docker_up:
-	docker-compose up -d
+	docker-compose up $(backgroud_option)
 
 docker_stop:
 	docker-compose stop
