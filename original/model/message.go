@@ -42,6 +42,17 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 }
 
 // Insertはmessageテーブルに新規データを1件追加します
-func (m *Message) Insert(db *sql.DB) (sql.Result, error) {
-	return db.Exec(`insert into message (body) values (?)`, m.Body)
+func (m *Message) Insert(db *sql.DB) (*Message, error) {
+	res, err := db.Exec(`insert into message (body) values (?)`, m.Body)
+	if err != nil {
+		return nil, err
+	}
+	id, err := res.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	return &Message{
+		ID:   id,
+		Body: m.Body,
+	}, nil
 }

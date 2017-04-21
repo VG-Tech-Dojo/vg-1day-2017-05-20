@@ -4,6 +4,7 @@ GOOS = darwin
 GOARCH = amd64
 VERSION = $(shell git rev-parse HEAD)
 ENV = test
+host=localhost:8080
 
 server: install
 	go run server.go
@@ -44,3 +45,16 @@ migrate_dryrun:
 ## Show migration status
 migrate_status:
 	sql-migrate status -env=$(ENV)
+
+curl_messages_ping:
+	curl -i $(host)/api/ping
+
+curl_messages_get_all:
+	curl -i $(host)/api/messages
+
+curl_messages_get:
+	curl -i $(host)/api/messages/$(id)
+
+curl_message_create:
+	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)"}'
+
