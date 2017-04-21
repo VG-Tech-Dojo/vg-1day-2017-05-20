@@ -31,16 +31,9 @@ func (m *Message) GetByID(c *gin.Context) {
 
 	switch {
 	case err == sql.ErrNoRows:
-		c.JSON(http.StatusNotFound, model.APIResponse{
-			Error: &model.APIError{
-				Message: err.Error(),
-			},
-		})
+		errorResponse(c, http.StatusNotFound, err)
 	case err != nil:
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"result": "error",
-			"error":  err.Error(),
-		})
+		errorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	c.JSON(http.StatusOK, msg)
@@ -49,23 +42,28 @@ func (m *Message) GetByID(c *gin.Context) {
 func (m *Message) Create(c *gin.Context) {
 	var msg model.Message
 	if err := c.BindJSON(&msg); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"result": "error",
-			"error":  err.Error(),
-		})
+		errorResponse(c, http.StatusInternalServerError, err)
 	}
 
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"result": "error",
-			"error":  err.Error(),
-		})
+		errorResponse(c, http.StatusInternalServerError, err)
 	}
 
-	c.JSON(http.StatusOK, model.APIResponse{
-		Result: &model.APIResult{
-			Message: inserted,
+	c.JSON(http.StatusOK, gin.H{
+		"error": nil,
+		"result": gin.H{
+			"message": inserted,
+		},
+	})
+}
+
+// errorResponse return json response for api error
+func errorResponse(c *gin.Context, code int, err error) {
+	c.JSON(code, gin.H{
+		"result": nil,
+		"error": gin.H{
+			"message": err.Error(),
 		},
 	})
 }
