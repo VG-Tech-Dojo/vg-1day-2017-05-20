@@ -1,6 +1,9 @@
 package model
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
 
 type Message struct {
 	ID   int64  `json:"id"`
@@ -25,6 +28,10 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
+	}
+
+	if len(ms) == 0 {
+		return nil, errors.New("no data")
 	}
 
 	return ms, nil

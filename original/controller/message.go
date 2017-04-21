@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
@@ -16,10 +17,7 @@ type Message struct {
 func (m *Message) All(c *gin.Context) {
 	msgs, err := model.MessagesAll(m.DB)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"result": "error",
-			"error":  err.Error(),
-		})
+		errorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
@@ -43,11 +41,18 @@ func (m *Message) Create(c *gin.Context) {
 	var msg model.Message
 	if err := c.BindJSON(&msg); err != nil {
 		errorResponse(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	if msg.Body == "" {
+		errorResponse(c, http.StatusBadRequest, errors.New("body is missing"))
+		return
 	}
 
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
