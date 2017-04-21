@@ -56,7 +56,7 @@ func (m *Message) Create(c *gin.Context) {
 	}
 
 	//NOTE: insert結果受け取ってjsonで何か返す?
-	_, err := msg.Insert(m.DB)
+	inserted, err := msg.Insert(m.DB)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"result": "error",
@@ -66,7 +66,7 @@ func (m *Message) Create(c *gin.Context) {
 
 	c.JSON(http.StatusOK, model.APIResponse{
 		Result: &model.APIResult{
-			Message: &msg,
+			Message: inserted,
 		},
 	})
 }
