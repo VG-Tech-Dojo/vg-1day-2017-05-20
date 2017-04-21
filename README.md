@@ -18,8 +18,13 @@ vg-1day-2017 で使う予定のサンプルアプリです。
 ```
 $ pwd
 /Users/s-sasamoto/src/github.com/VG-Tech-Dojo/vg-1day-2017
-$ make docker_build
-$ make docker_up
+$ make docker_server
+
+# foregroundで実行したい場合
+$ make docker_server backgroud_option=
+
+# なにかおかしいなと感じた時
+$ make docker_clean
 ```
 
 ## 参考リンク

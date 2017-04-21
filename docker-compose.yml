@@ -10,3 +10,4 @@ services:
     ports:
       - 8088:8080
     working_dir: /go/src/github.com/VG-Tech-Dojo/vg-1day-2017
+    command: make -C /go/src/github.com/VG-Tech-Dojo/vg-1day-2017/original server
