@@ -55,7 +55,6 @@ func (m *Message) Create(c *gin.Context) {
 		})
 	}
 
-	//NOTE: insert結果受け取ってjsonで何か返す?
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
