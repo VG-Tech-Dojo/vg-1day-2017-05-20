@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
+	"flag"
 	"log"
 	"net/http"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/controller"
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/db"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -22,9 +24,13 @@ func NewServer() *Server {
 	}
 }
 
-func (s *Server) Init() error {
-	// open db connection
-	db, err := sql.Open("sqlite3", "./dev.db")
+func (s *Server) Init(dbconf, env string) error {
+	cs, err := db.NewConfigsFromFile(dbconf)
+	if err != nil {
+		return err
+	}
+
+	db, err := cs.Open(env)
 	if err != nil {
 		return err
 	}
@@ -61,12 +67,16 @@ func (s *Server) Run() {
 }
 
 func main() {
-	// TODO: dbのconfigとかenvとか引数で受け取るようにする
+	var (
+		dbconf = flag.String("dbconf", "dbconfig.yml", "database configuration file.")
+		env    = flag.String("env", "development", "application envirionment (production, development etc.)")
+	)
+	flag.Parse()
+
 	s := NewServer()
-	if err := s.Init(); err != nil {
+	if err := s.Init(*dbconf, *env); err != nil {
 		log.Fatalf("fail to start server: ", err)
 	}
 	defer s.Close()
-
 	s.Run()
 }
