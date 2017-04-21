@@ -7,7 +7,7 @@ type Message struct {
 	Body string `json:"body"`
 }
 
-// MessagesAlll は全てのメッセージを返します
+// MessagesAll は全てのメッセージを返します
 func MessagesAll(db *sql.DB) ([]*Message, error) {
 	rows, err := db.Query(`select id, body from message`)
 	if err != nil {
@@ -41,9 +41,7 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 	return m, nil
 }
 
-func (m *Message) Insert(db *sql.DB) error {
-	if _, err := db.Exec(`insert into message (body) values (?)`, m.Body); err != nil {
-		return err
-	}
-	return nil
+// Insertはmessageテーブルに新規データを1件追加します
+func (m *Message) Insert(db *sql.DB) (sql.Result, error) {
+	return db.Exec(`insert into message (body) values (?)`, m.Body)
 }

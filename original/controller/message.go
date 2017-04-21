@@ -16,7 +16,10 @@ type Message struct {
 func (m *Message) All(c *gin.Context) {
 	msgs, err := model.MessagesAll(m.DB)
 	if err != nil {
-		c.String(500, "%s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "error",
+			"error":  err.Error(),
+		})
 		return
 	}
 
@@ -28,9 +31,15 @@ func (m *Message) GetByID(c *gin.Context) {
 
 	switch {
 	case err == sql.ErrNoRows:
-		c.String(500, "%s", err)
+		c.JSON(http.StatusNotFound, gin.H{
+			"result": "error",
+			"error":  err.Error(),
+		})
 	case err != nil:
-		c.String(500, "%s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "error",
+			"error":  err.Error(),
+		})
 	}
 
 	c.JSON(http.StatusOK, msg)
@@ -39,11 +48,21 @@ func (m *Message) GetByID(c *gin.Context) {
 func (m *Message) Create(c *gin.Context) {
 	var msg model.Message
 	if err := c.BindJSON(&msg); err != nil {
-		c.String(500, "%s", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "error",
+			"error":  err.Error(),
+		})
 	}
 
-	if err := msg.Insert(m.DB); err != nil {
-		c.String(500, "%s", err)
+	//NOTE: insert結果受け取ってjsonで何か返す?
+	_, err := msg.Insert(m.DB)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"result": "error",
+			"error":  err.Error(),
+		})
 	}
-	c.String(http.StatusOK, "created")
+	c.JSON(http.StatusCreated, gin.H{
+		"result": "ok",
+	})
 }
