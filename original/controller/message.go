@@ -31,9 +31,10 @@ func (m *Message) GetByID(c *gin.Context) {
 
 	switch {
 	case err == sql.ErrNoRows:
-		c.JSON(http.StatusNotFound, gin.H{
-			"result": "error",
-			"error":  err.Error(),
+		c.JSON(http.StatusNotFound, model.APIResponse{
+			Error: &model.APIError{
+				Message: err.Error(),
+			},
 		})
 	case err != nil:
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -62,7 +63,10 @@ func (m *Message) Create(c *gin.Context) {
 			"error":  err.Error(),
 		})
 	}
-	c.JSON(http.StatusCreated, gin.H{
-		"result": "ok",
+
+	c.JSON(http.StatusOK, model.APIResponse{
+		Result: &model.APIResult{
+			Message: &msg,
+		},
 	})
 }
