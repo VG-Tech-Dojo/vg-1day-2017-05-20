@@ -52,7 +52,7 @@ func (m *Message) Insert(db *sql.DB) (*Message, error) {
 		return nil, err
 	}
 	return &Message{
-		ID: id,
-		m.Body,
+		ID:   id,
+		Body: m.Body,
 	}, nil
 }
