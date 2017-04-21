@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := help
-backgroud_option=-d
+background_option=-d
 
 docker_server: docker_build docker_up
 
