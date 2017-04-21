@@ -31,7 +31,6 @@ func (s *Server) Init() error {
 	s.db = db
 
 	// routing
-	message := &controller.Message{DB: db}
 	s.Engine.LoadHTMLGlob("./templates/*")
 
 	s.Engine.GET("/", func(c *gin.Context) {
@@ -44,9 +43,11 @@ func (s *Server) Init() error {
 	api.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-	api.GET("/messages", message.All)
-	api.GET("/message/:id", message.GetByID)
-	api.POST("/message", message.Create)
+
+	mctr := &controller.Message{DB: db}
+	api.GET("/messages", mctr.All)
+	api.GET("/messages/:id", mctr.GetByID)
+	api.POST("/messages", mctr.Create)
 
 	return nil
 }
