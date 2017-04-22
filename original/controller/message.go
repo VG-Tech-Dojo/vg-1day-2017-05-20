@@ -19,7 +19,12 @@ func (m *Message) All(c *gin.Context) {
 	msgs, err := model.MessagesAll(m.DB)
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
-		c.JSON(http.StatusNotFound, resp)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	if len(msgs) == 0 {
+		c.JSON(http.StatusOK, make([]*model.Message, 0))
 		return
 	}
 
