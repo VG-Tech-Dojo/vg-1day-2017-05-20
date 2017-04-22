@@ -14,6 +14,7 @@ deps:
 	which make2help || go get -u github.com/Songmu/make2help/cmd/make2help
 	which dep || go get -u github.com/golang/dep/...
 	which sql-migrate || go get -u github.com/rubenv/sql-migrate/...
+	which fresh || go get -u github.com/pilu/fresh
 
 ## Install dependency packages, cache compiled packages
 install: deps
@@ -23,6 +24,10 @@ install: deps
 ## Build app
 build:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
+
+## Live reload
+watch:
+	fresh
 
 clean: clean_vendor
 
