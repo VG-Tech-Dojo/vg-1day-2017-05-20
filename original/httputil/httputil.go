@@ -1,6 +1,6 @@
 package httputil
 
-type APIResult interface{}
+type APIResult map[string]interface{}
 
 type APIError struct {
 	Message string `json:"message"`
@@ -12,13 +12,13 @@ func newAPIError(err error) *APIError {
 	}
 }
 
-type ErrorResponse struct {
+type APIResponse struct {
 	Result *APIResult `json:"result"`
 	Error  *APIError  `json:"error"`
 }
 
-func NewErrorResponse(err error) *ErrorResponse {
-	return &ErrorResponse{
+func NewErrorResponse(err error) *APIResponse {
+	return &APIResponse{
 		Error: newAPIError(err),
 	}
 }

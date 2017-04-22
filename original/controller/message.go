@@ -23,6 +23,11 @@ func (m *Message) All(c *gin.Context) {
 		return
 	}
 
+	if len(msgs) == 0 {
+		c.JSON(http.StatusOK, make([]*model.Message, 0))
+		return
+	}
+
 	c.JSON(http.StatusOK, msgs)
 }
 
@@ -63,10 +68,15 @@ func (m *Message) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-		"result": gin.H{
-			"message": inserted,
-		},
-	})
+	c.JSON(http.StatusCreated, inserted)
+}
+
+func (m *Message) UpdateByID(c *gin.Context) {
+	// TODO: 更新処理書く
+	c.JSON(http.StatusCreated, gin.H{})
+}
+
+func (m *Message) DeleteByID(c *gin.Context) {
+	// TODO: 削除処理書く
+	c.JSON(http.StatusOK, gin.H{})
 }
