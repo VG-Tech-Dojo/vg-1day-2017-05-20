@@ -19,7 +19,7 @@ func (m *Message) All(c *gin.Context) {
 	msgs, err := model.MessagesAll(m.DB)
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
-		c.JSON(http.StatusInternalServerError, resp)
+		c.JSON(http.StatusNotFound, resp)
 		return
 	}
 
@@ -63,10 +63,5 @@ func (m *Message) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{
-		"error": nil,
-		"result": gin.H{
-			"message": inserted,
-		},
-	})
+	c.JSON(http.StatusCreated, inserted)
 }
