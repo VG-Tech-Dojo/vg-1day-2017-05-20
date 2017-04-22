@@ -1,4 +1,4 @@
-memo = "b380a83129078e3fcc124f01e2223ddf4fde3745f5916b984415bbfc0129ecb2"
+memo = "6a6412b297df1cc2de5caa1c9c6ba1eb1c6628f9697bad13dfeea03edaaa6105"
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
