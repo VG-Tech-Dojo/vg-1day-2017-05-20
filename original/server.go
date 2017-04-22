@@ -1,13 +1,16 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"flag"
 	"log"
 	"net/http"
 
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/bot"
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/controller"
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/db"
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -16,6 +19,7 @@ import (
 type Server struct {
 	db     *sql.DB
 	Engine *gin.Engine
+	Bots   []bot.Bot
 }
 
 func NewServer() *Server {
@@ -50,12 +54,17 @@ func (s *Server) Init(dbconf, env string) error {
 		c.String(http.StatusOK, "pong")
 	})
 
-	mctr := &controller.Message{DB: db}
+	msgStream := make(chan *model.Message)
+	mctr := &controller.Message{DB: db, Stream: msgStream}
 	api.GET("/messages", mctr.All)
 	api.GET("/messages/:id", mctr.GetByID)
 	api.POST("/messages", mctr.Create)
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
+
+	// bot
+	b := bot.NewSimpleBot(msgStream)
+	s.Bots = append(s.Bots, b)
 
 	return nil
 }
@@ -65,6 +74,14 @@ func (s *Server) Close() error {
 }
 
 func (s *Server) Run() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// botを起動
+	for _, b := range s.Bots {
+		go b.Run(ctx)
+	}
+
 	s.Engine.Run()
 }
 
@@ -77,8 +94,9 @@ func main() {
 
 	s := NewServer()
 	if err := s.Init(*dbconf, *env); err != nil {
-		log.Fatalf("fail to start server: ", err)
+		log.Fatalf("fail to init server: %s", err)
 	}
 	defer s.Close()
+
 	s.Run()
 }
