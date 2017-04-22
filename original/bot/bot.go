@@ -26,8 +26,7 @@ func (b *SimpleBot) Watch(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case m := <-b.in:
-			fmt.Printf("%v", m)
-			return
+			fmt.Printf("bot received: %v\n", m)
 		}
 	}
 }
