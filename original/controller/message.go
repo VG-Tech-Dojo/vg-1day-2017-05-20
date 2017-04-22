@@ -65,3 +65,13 @@ func (m *Message) Create(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, inserted)
 }
+
+func (m *Message) UpdateByID(c *gin.Context) {
+	// TODO: 更新処理書く
+	c.JSON(http.StatusCreated, gin.H{})
+}
+
+func (m *Message) DeleteByID(c *gin.Context) {
+	// TODO: 削除処理書く
+	c.JSON(http.StatusOK, gin.H{})
+}

@@ -54,6 +54,8 @@ func (s *Server) Init(dbconf, env string) error {
 	api.GET("/messages", mctr.All)
 	api.GET("/messages/:id", mctr.GetByID)
 	api.POST("/messages", mctr.Create)
+	api.PUT("/messages/:id", mctr.UpdateByID)
+	api.DELETE("/messages/:id", mctr.DeleteByID)
 
 	return nil
 }
