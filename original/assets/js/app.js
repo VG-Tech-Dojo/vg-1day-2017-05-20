@@ -1,36 +1,68 @@
 const Message = function() {
-  this.text = ''
-  this.user = ''
-}
-Message.prototype.isValid = function () {
-  return this.text !== '' && this.user !== ''
+  this.body = ''
 }
 
 Vue.component('message', {
-  props: ['user', 'text'],
-  template: '<div>{{ text }} - {{ user }}</div>'
+  props: ['id', 'body', 'removeMessage'],
+  template: `
+    <div>
+      {{ body }}
+      <span v-on:click="remove">x</span>
+    </div>
+  `,
+  methods: {
+    remove() {
+      this.removeMessage(this.id)
+    }
+  } 
 })
 
 const app = new Vue({
   el: '#app',
   data: {
-    messages: [
-      {'user': 'nk5', 'text': '1dayインターン始まるよ'},
-      {'user': 'saxsir', 'text': '何やるですか'},
-      {'user': 'nk5', 'text': 'Go, Vue.js'},
-      {'user': 'saxsir', 'text': 'えー'},
-    ],
+    messages: [],
     newMessage: new Message()
   },
+  created() {
+    this.getMessages();
+  },
   methods: {
+    getMessages() {
+      fetch('/api/messages')
+        .then(response => response.json())
+        .then(data => {
+          this.messages = data
+        })
+    },
     sendMessage() {
       const message = this.newMessage;
-      if (!message.isValid()) {
-        alert('Input cannot be blank')
-        return
-      }
-      this.messages.push(message)
-      this.clearMessage()
+      fetch('/api/messages', {
+        method: 'POST',
+        body: JSON.stringify(message)
+      })
+      .then(response => response.json())
+      .then(response => {
+        if (response.error) {
+          alert(response.error.message);
+          return;
+        }
+        this.messages.push(response)
+        this.clearMessage()
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    removeMessage(id) {
+      fetch(`/api/messages/${id}`, {
+        method: 'DELETE',
+      })
+      .then(response => {
+          // TODO: 削除処理書く
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
     },
     clearMessage() {
       this.newMessage = new Message()
