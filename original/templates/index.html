@@ -8,18 +8,17 @@
   <div id="app">
     <div v-for="message in messages">
       <message
-        :user="message.user"
-        :text="message.text"
+        :body="message.body"
       ></message>
     </div>
     <div>
-      <input v-model="newMessage.user" placeholder="ユーザー名">
-      <input v-model="newMessage.text" placeholder="">
+      <input v-model="newMessage.body" placeholder="">
       <button v-on:click="sendMessage">Send</button>
     </div>
   </div>
 
   <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/whatwg-fetch"></script>
   <script src="/assets/js/app.js"></script>
 </body>
 </html>
