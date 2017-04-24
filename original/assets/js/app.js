@@ -3,8 +3,18 @@ const Message = function() {
 }
 
 Vue.component('message', {
-  props: ['body'],
-  template: '<div>{{ body }}</div>'
+  props: ['id', 'body', 'removeMessage'],
+  template: `
+    <div>
+      {{ body }}
+      <span v-on:click="remove">x</span>
+    </div>
+  `,
+  methods: {
+    remove() {
+      this.removeMessage(this.id)
+    }
+  } 
 })
 
 const app = new Vue({
@@ -39,6 +49,18 @@ const app = new Vue({
         this.messages.push(response)
         this.clearMessage()
       }).catch(error => {
+        console.log(error)
+      })
+    },
+    removeMessage(id) {
+      fetch(`/api/messages/${id}`, {
+        method: 'DELETE',
+      })
+      .then(response => {
+          // TODO: 削除処理書く
+        console.log(response)
+      })
+      .catch(error => {
         console.log(error)
       })
     },

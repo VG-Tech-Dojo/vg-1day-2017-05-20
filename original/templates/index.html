@@ -8,7 +8,9 @@
   <div id="app">
     <div v-for="message in messages">
       <message
+        :id="message.id"
         :body="message.body"
+        :remove-message="removeMessage"
       ></message>
     </div>
     <div>
