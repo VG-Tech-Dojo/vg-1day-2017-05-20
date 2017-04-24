@@ -1,71 +1,73 @@
-const Message = function() {
-  this.body = ''
-}
+(function() {
+  'use strict';
+  const Message = function() {
+    this.body = '';
+  };
 
-Vue.component('message', {
-  props: ['id', 'body', 'removeMessage'],
-  template: `
+  Vue.component('message', {
+    props: ['id', 'body', 'removeMessage'],
+    template: `
     <div class="message">
       <span>{{ body }}</span>
       <span class="remove-message-button u-pull-right" v-on:click="remove">x</span>
     </div>
   `,
-  methods: {
-    remove() {
-      this.removeMessage(this.id)
+    methods: {
+      remove() {
+        this.removeMessage(this.id);
+      }
     }
-  } 
-})
+  });
 
-const app = new Vue({
-  el: '#app',
-  data: {
-    messages: [],
-    newMessage: new Message()
-  },
-  created() {
-    this.getMessages();
-  },
-  methods: {
-    getMessages() {
-      fetch('/api/messages')
-        .then(response => response.json())
-        .then(data => {
-          this.messages = data
+  const app = new Vue({
+    el: '#app',
+    data: {
+      messages: [],
+      newMessage: new Message()
+    },
+    created() {
+      this.getMessages();
+    },
+    methods: {
+      getMessages() {
+        fetch('/api/messages').then(response => response.json()).then(data => {
+          this.messages = data;
+        });
+      },
+      sendMessage() {
+        const message = this.newMessage;
+        fetch('/api/messages', {
+          method: 'POST',
+          body: JSON.stringify(message)
         })
-    },
-    sendMessage() {
-      const message = this.newMessage;
-      fetch('/api/messages', {
-        method: 'POST',
-        body: JSON.stringify(message)
-      })
-      .then(response => response.json())
-      .then(response => {
-        if (response.error) {
-          alert(response.error.message);
-          return;
-        }
-        this.messages.push(response)
-        this.clearMessage()
-      }).catch(error => {
-        console.log(error)
-      })
-    },
-    removeMessage(id) {
-      fetch(`/api/messages/${id}`, {
-        method: 'DELETE',
-      })
-      .then(response => {
-          // TODO: 削除処理書く
-        console.log(response)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    },
-    clearMessage() {
-      this.newMessage = new Message()
-    }        
-  }
-})
+          .then(response => response.json())
+          .then(response => {
+            if (response.error) {
+              alert(response.error.message);
+              return;
+            }
+            this.messages.push(response);
+            this.clearMessage();
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      removeMessage(id) {
+        fetch(`/api/messages/${id}`, {
+          method: 'DELETE'
+        })
+          .then(response => {
+            // TODO: 削除処理書く
+            console.log(response);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      },
+      clearMessage() {
+        this.newMessage = new Message();
+      }
+    }
+  });
+})();
