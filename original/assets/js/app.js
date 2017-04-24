@@ -5,9 +5,9 @@ const Message = function() {
 Vue.component('message', {
   props: ['id', 'body', 'removeMessage'],
   template: `
-    <div>
-      {{ body }}
-      <span v-on:click="remove">x</span>
+    <div class="message">
+      <span>{{ body }}</span>
+      <span class="remove-message-button u-pull-right" v-on:click="remove">x</span>
     </div>
   `,
   methods: {

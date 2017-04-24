@@ -1,0 +1,17 @@
+.message-list {
+
+}
+
+.message {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.message .remove-message-button {
+  visibility: hidden;
+}
+
+.message:hover .remove-message-button {
+  color: #c1c1c1;
+  visibility: visible;
+}
