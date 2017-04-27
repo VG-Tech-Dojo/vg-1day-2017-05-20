@@ -31,7 +31,7 @@
     methods: {
       getMessages() {
         fetch('/api/messages').then(response => response.json()).then(data => {
-          this.messages = data;
+          this.messages = data.result;
         });
       },
       sendMessage() {
@@ -46,7 +46,7 @@
               alert(response.error.message);
               return;
             }
-            this.messages.push(response);
+            this.messages.push(response.result);
             this.clearMessage();
           })
           .catch(error => {
