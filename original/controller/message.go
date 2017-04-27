@@ -28,7 +28,10 @@ func (m *Message) All(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, msgs)
+	c.JSON(http.StatusOK, gin.H{
+		"result": msgs,
+		"error":  nil,
+	})
 }
 
 func (m *Message) GetByID(c *gin.Context) {
@@ -45,7 +48,10 @@ func (m *Message) GetByID(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, msg)
+	c.JSON(http.StatusOK, gin.H{
+		"result": msg,
+		"error":  nil,
+	})
 }
 
 func (m *Message) Create(c *gin.Context) {
@@ -68,7 +74,10 @@ func (m *Message) Create(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, inserted)
+	c.JSON(http.StatusCreated, gin.H{
+		"result": inserted,
+		"error":  nil,
+	})
 }
 
 func (m *Message) UpdateByID(c *gin.Context) {
