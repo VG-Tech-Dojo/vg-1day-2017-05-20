@@ -1,10 +1,10 @@
 -- +migrate Up
 CREATE TABLE message (
     id INTEGER NOT NULL PRIMARY KEY,
-    body TEXT,
-    sender_name TEXT,
+    body TEXT NOT NULL DEFAULT "",
+    sender_name TEXT NOT NULL DEFAULT "anonymous",
     created TIMESTAMP NOT NULL DEFAULT (DATETIME('now', 'localtime')),
-    updated TIMESTAMP
+    updated TIMESTAMP NOT NULL DEFAULT (DATETIME('now', 'localtime'))
 );
 
 -- +migrate Down
