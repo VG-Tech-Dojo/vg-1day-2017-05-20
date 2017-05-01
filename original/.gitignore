@@ -1,3 +1,5 @@
 vendor/
 server
 tmp/
+
+.idea
