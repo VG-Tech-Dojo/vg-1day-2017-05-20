@@ -12,8 +12,8 @@
       <h5>メッセージアプリ</h5>
     </div>
     <div class="row">
+      <!-- 1-1. ユーザー名を表示しよう -->
       <div class="message-list" v-for="message in messages">
-        <!-- 1-1. ユーザー名を表示しよう -->
         <message
           :id="message.id"
           :body="message.body"
@@ -26,8 +26,6 @@
       <textarea class="u-full-width" v-model="newMessage.body" placeholder="メッセージ"></textarea>
       <button class="button-primary" v-on:click="sendMessage">Send</button>
     </div>
-    <!-- 1-3. メッセージを編集しよう -->
-    <!-- NOTE: ガワは用意しておく？ -->
   </div>
 
   <script src="https://unpkg.com/vue"></script>

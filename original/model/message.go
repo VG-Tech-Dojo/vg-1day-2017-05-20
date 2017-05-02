@@ -4,10 +4,10 @@ import (
 	"database/sql"
 )
 
-// 1-1. ユーザー名を表示しよう
 type Message struct {
 	ID   int64  `json:"id"`
 	Body string `json:"body"`
+	// 1-1. ユーザー名を表示しよう
 }
 
 // MessagesAll は全てのメッセージを返します
@@ -58,9 +58,11 @@ func (m *Message) Insert(db *sql.DB) (*Message, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return &Message{
 		ID:   id,
 		Body: m.Body,
+		// 1-2. ユーザー名を追加しよう
 	}, nil
 }
 
