@@ -44,15 +44,19 @@ func (s *Server) Init(dbconf, env string) error {
 	})
 	s.Engine.Static("/assets", "./assets")
 
+	// tutorial. 自己紹介を追加する
+	// ...
+
 	// api
 	api := s.Engine.Group("/api")
 	api.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-
 	mctr := &controller.Message{DB: db}
+
 	api.GET("/messages", mctr.All)
 	api.GET("/messages/:id", mctr.GetByID)
+
 	api.POST("/messages", mctr.Create)
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
