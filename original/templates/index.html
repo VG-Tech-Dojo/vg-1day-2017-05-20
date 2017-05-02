@@ -12,6 +12,7 @@
       <h5>メッセージアプリ</h5>
     </div>
     <div class="row">
+      <!-- 1-1. ユーザー名を表示しよう -->
       <div class="message-list" v-for="message in messages">
         <message
           :id="message.id"
@@ -21,6 +22,7 @@
       </div>
     </div>
     <div class="row">
+      <!-- 1-2. ユーザー名を追加しよう -->
       <textarea class="u-full-width" v-model="newMessage.body" placeholder="メッセージ"></textarea>
       <button class="button-primary" v-on:click="sendMessage">Send</button>
     </div>
