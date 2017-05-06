@@ -19,6 +19,7 @@ import (
 type Server struct {
 	db     *sql.DB
 	Engine *gin.Engine
+	poster *bot.Poster
 	Bots   []bot.Bot
 }
 
@@ -62,8 +63,12 @@ func (s *Server) Init(dbconf, env string) error {
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
 
+	// poster
+	p := bot.NewPoster(10)
+	s.poster = p
+
 	// bot
-	b := bot.NewSimpleBot(msgStream)
+	b := bot.NewSimpleBot(msgStream, p.Input)
 	s.Bots = append(s.Bots, b)
 
 	return nil
@@ -78,6 +83,7 @@ func (s *Server) Run() {
 	defer cancel()
 
 	// botを起動
+	go s.poster.Run(ctx)
 	for _, b := range s.Bots {
 		go b.Run(ctx)
 	}
