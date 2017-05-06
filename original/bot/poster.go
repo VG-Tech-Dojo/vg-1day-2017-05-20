@@ -1,10 +1,7 @@
 package bot
 
 import (
-	"context"
-
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
-	"fmt"
 )
 
 const (
@@ -19,18 +16,10 @@ type (
 	}
 )
 
-func (p *Poster) Run(ctx context.Context) {
+func (p *Poster) Run() {
 	for m := range p.Input {
 		output := model.Message{}
 		go postJson(postUrl, m, &output)
-	}
-
-	for {
-		select {
-		case <-ctx.Done():
-			fmt.Println("poster stop")
-			return
-		}
 	}
 }
 

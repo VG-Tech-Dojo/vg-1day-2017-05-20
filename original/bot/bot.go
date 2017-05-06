@@ -9,15 +9,16 @@ import (
 
 type Bot interface {
 	Watch(context.Context)
-	Respond()
+	Respond(*model.Message)
 	Run(context.Context)
 }
 
-// helloを拾ってworldを返すbot
 type SimpleBot struct {
-	name string
-	in   chan *model.Message
-	out  chan *model.Message
+	name      string
+	in        chan *model.Message
+	out       chan *model.Message
+	checker   Checker
+	processor Processor
 }
 
 // Watchは投稿されたメッセージをチェックし続ける処理です
@@ -29,23 +30,30 @@ func (b *SimpleBot) Watch(ctx context.Context) {
 		case m := <-b.in:
 			fmt.Printf("bot received: %v\n", m)
 
-			// TODO: 後でメソッドに切り出す
-			if m.Body == "hello" {
-				b.Respond()
+			if b.checker.Check(m) {
+				b.Respond(m)
 			}
 		}
 	}
 }
 
-func (b *SimpleBot) Respond() {
-	b.out <- &model.Message{Body:"world"}
+func (b *SimpleBot) Respond(m *model.Message) {
+	message := b.processor.Process(m)
+	b.out <- message
+	fmt.Printf("bot send: %v\n", message)
 }
 
 func NewSimpleBot(in chan *model.Message, out chan *model.Message) *SimpleBot {
+	checker := NewRegexpChecker("\\Ahello\\z")
+
+	processor := &HelloWorldProcessor{}
+
 	return &SimpleBot{
 		name: "simplebot",
 		in:   in,
 		out:  out,
+		checker: checker,
+		processor: processor,
 	}
 }
 

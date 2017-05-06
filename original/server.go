@@ -85,8 +85,10 @@ func (s *Server) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	// posterを起動
+	go s.poster.Run()
+
 	// botを起動
-	go s.poster.Run(ctx)
 	for _, b := range s.Bots {
 		go b.Run(ctx)
 	}
