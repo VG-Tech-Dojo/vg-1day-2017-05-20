@@ -13,6 +13,7 @@ type Bot interface {
 	Run(context.Context)
 }
 
+// helloを拾ってworldを返すbot
 type SimpleBot struct {
 	name string
 	in   chan *model.Message
@@ -27,17 +28,24 @@ func (b *SimpleBot) Watch(ctx context.Context) {
 			return
 		case m := <-b.in:
 			fmt.Printf("bot received: %v\n", m)
+
+			// TODO: 後でメソッドに切り出す
+			if m.Body == "hello" {
+				b.Respond()
+			}
 		}
 	}
 }
 
-func (b *SimpleBot) Respond() {}
+func (b *SimpleBot) Respond() {
+	b.out <- &model.Message{Body:"world"}
+}
 
-func NewSimpleBot(in chan *model.Message) *SimpleBot {
+func NewSimpleBot(in chan *model.Message, out chan *model.Message) *SimpleBot {
 	return &SimpleBot{
 		name: "simplebot",
 		in:   in,
-		out:  make(chan *model.Message),
+		out:  out,
 	}
 }
 
