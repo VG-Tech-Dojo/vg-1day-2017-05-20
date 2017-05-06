@@ -68,6 +68,9 @@ func (m *Message) Create(c *gin.Context) {
 		return
 	}
 
+	// 1-2. ユーザー名を追加しよう
+	// ユーザー名が空でも投稿できるようにするかどうかは自分で考えてみよう
+
 	inserted, err := msg.Insert(m.DB)
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
@@ -85,11 +88,13 @@ func (m *Message) Create(c *gin.Context) {
 }
 
 func (m *Message) UpdateByID(c *gin.Context) {
-	// TODO: 更新処理書く
+	// 1-3. メッセージを編集しよう
+	// ...
 	c.JSON(http.StatusCreated, gin.H{})
 }
 
 func (m *Message) DeleteByID(c *gin.Context) {
-	// TODO: 削除処理書く
+	// 1-4. メッセージを削除しよう
+	// ...
 	c.JSON(http.StatusOK, gin.H{})
 }

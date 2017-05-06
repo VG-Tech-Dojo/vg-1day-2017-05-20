@@ -69,3 +69,6 @@ curl_message_put:
 curl_message_delete:
 	curl -i -X DELETE $(host)/api/messages/$(id) -d '{"body": "$(body)"}'
 
+## Initialize database
+db_init:
+	cp -i _etc/seed.db dev.db

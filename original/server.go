@@ -49,6 +49,9 @@ func (s *Server) Init(dbconf, env string) error {
 	})
 	s.Engine.Static("/assets", "./assets")
 
+	// tutorial. 自己紹介を追加する
+	// ...
+
 	// api
 	api := s.Engine.Group("/api")
 	api.GET("/ping", func(c *gin.Context) {

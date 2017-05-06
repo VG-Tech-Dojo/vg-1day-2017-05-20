@@ -5,7 +5,9 @@
   };
 
   Vue.component('message', {
+    // 1-1. ユーザー名を表示しよう
     props: ['id', 'body', 'removeMessage'],
+    // 1-1. ユーザー名を表示しよう
     template: `
     <div class="message">
       <span>{{ body }}</span>
@@ -68,6 +70,8 @@
       clearMessage() {
         this.newMessage = new Message();
       }
+	  // 1-3. メッセージを編集しよう
+      // ...
     }
   });
 })();
