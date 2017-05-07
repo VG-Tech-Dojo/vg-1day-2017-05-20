@@ -46,7 +46,7 @@ func (b *Bot) Run(ctx context.Context) {
 }
 
 // "hello"を受け取ると"hello, world!"を返すbot
-func NewSimpleBot(out chan *model.Message) *Bot {
+func NewHelloWorldBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 
 	checker := NewRegexpChecker("\\Ahello\\z")
@@ -54,7 +54,7 @@ func NewSimpleBot(out chan *model.Message) *Bot {
 	processor := &HelloWorldProcessor{}
 
 	return &Bot{
-		name:      "simplebot",
+		name:      "helloworldbot",
 		in:        in,
 		out:       out,
 		checker:   checker,
