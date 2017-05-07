@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
+// inputをJSON形式でurlにPOSTする
 func postJson(url string, input interface{}, output interface{}) error {
 	data, err := json.Marshal(input)
 	if err != nil {
@@ -35,6 +36,7 @@ func postJson(url string, input interface{}, output interface{}) error {
 	return nil
 }
 
+// 0からn-1までのintの乱数を返す
 func randIntn (n int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(n)

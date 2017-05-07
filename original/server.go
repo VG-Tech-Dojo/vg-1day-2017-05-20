@@ -21,7 +21,7 @@ type Server struct {
 	Engine      *gin.Engine
 	broadcaster *bot.Broadcaster
 	poster      *bot.Poster
-	Bots        []*bot.Bot
+	bots        []*bot.Bot
 }
 
 func NewServer() *Server {
@@ -67,19 +67,17 @@ func (s *Server) Init(dbconf, env string) error {
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
 
-	// broadcaster
+	// bot
 	broadcaster := bot.NewBroadcaster(msgStream)
 	s.broadcaster = broadcaster
 
-	// poster
 	poster := bot.NewPoster(10)
 	s.poster = poster
 
-	// bot
 	simpleBot := bot.NewSimpleBot(s.poster.In)
-	s.Bots = append(s.Bots, simpleBot)
+	s.bots = append(s.bots, simpleBot)
 	omikujiBot := bot.NewOmikujiBot(s.poster.In)
-	s.Bots = append(s.Bots, omikujiBot)
+	s.bots = append(s.bots, omikujiBot)
 
 	return nil
 }
@@ -92,14 +90,12 @@ func (s *Server) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// broadcasterを起動
+	// botを起動
 	go s.broadcaster.Run()
 
-	// posterを起動
 	go s.poster.Run()
 
-	// botを起動
-	for _, b := range s.Bots {
+	for _, b := range s.bots {
 		go b.Run(ctx)
 		s.broadcaster.BotIn <- b
 	}

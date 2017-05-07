@@ -9,13 +9,13 @@ const (
 )
 
 type (
-	// Poster
-	// Inに入ったメッセージをPOSTする
+	// Inに渡されたmessageをPOSTする
 	Poster struct {
 		In chan *model.Message
 	}
 )
 
+// posterを起動する
 func (p *Poster) Run() {
 	for m := range p.In {
 		out := &model.Message{}
@@ -23,7 +23,7 @@ func (p *Poster) Run() {
 	}
 }
 
-// posterの生成はこの関数を使う
+// posterのインスタンス生成はこの関数を使う
 func NewPoster(bufferSize int) *Poster {
 	in := make(chan *model.Message, bufferSize)
 	return &Poster{

@@ -5,6 +5,16 @@ import (
 )
 
 type (
+	// 1つのチャンネルで複数botを動かすためのヘルパー
+	//
+	// msgInで受け取ったmessageをbotsに登録された全botに渡す
+	//
+	// botsへの登録はBotInで行う
+	//
+	//   fields
+	// 	   BotIn chan *Bot
+	// 	   bots  map[*Bot]bool
+	// 	   msgIn chan *model.Message
 	Broadcaster struct {
 		BotIn chan *Bot
 		bots  map[*Bot]bool
@@ -12,6 +22,7 @@ type (
 	}
 )
 
+// broadcasterを起動する
 func (b *Broadcaster) Run() {
 	for {
 		select {
@@ -25,6 +36,7 @@ func (b *Broadcaster) Run() {
 	}
 }
 
+// broadcasterのインスタンス生成はこの関数を使う
 func NewBroadcaster(msgIn chan *model.Message) *Broadcaster {
 	memberIn := make(chan *Bot)
 	return &Broadcaster{

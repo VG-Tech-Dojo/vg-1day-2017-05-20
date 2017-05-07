@@ -7,14 +7,25 @@ import (
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
 )
 
-type Bot struct {
-	name      string
-	in        chan *model.Message
-	out       chan *model.Message
-	checker   Checker
-	processor Processor
-}
+type (
+	// inで受け取ったmessageがcheckerの条件を満たした場合、processorが投稿用messageを作り、outに渡す
+	//
+	//   fields
+	//     name      string
+	//     in        chan *model.Message
+	//     out       chan *model.Message
+	//     checker   Checker
+	//     processor Processor
+	Bot struct {
+		name      string
+		in        chan *model.Message
+		out       chan *model.Message
+		checker   Checker
+		processor Processor
+	}
+)
 
+// botを起動する
 func (b *Bot) Run(ctx context.Context) {
 	fmt.Printf("%s start\n", b.name)
 
@@ -28,18 +39,13 @@ func (b *Bot) Run(ctx context.Context) {
 			fmt.Printf("%s received: %v\n", b.name, m)
 
 			if b.checker.Check(m) {
-				b.Respond(m)
+				b.respond(m)
 			}
 		}
 	}
 }
 
-func (b *Bot) Respond(m *model.Message) {
-	message := b.processor.Process(m)
-	b.out <- message
-	fmt.Printf("%s send: %v\n", b.name, message)
-}
-
+// "hello"を受け取ると"hello, world!"を返すbot
 func NewSimpleBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 
@@ -56,6 +62,7 @@ func NewSimpleBot(out chan *model.Message) *Bot {
 	}
 }
 
+// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで返すbot
 func NewOmikujiBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 
@@ -70,4 +77,10 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 		checker:   checker,
 		processor: processor,
 	}
+}
+
+func (b *Bot) respond(m *model.Message) {
+	message := b.processor.Process(m)
+	b.out <- message
+	fmt.Printf("%s send: %v\n", b.name, message)
 }
