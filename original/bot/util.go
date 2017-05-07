@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"math/rand"
+	"time"
 
 	"github.com/pkg/errors"
 )
@@ -31,4 +33,9 @@ func postJson(url string, input interface{}, output interface{}) error {
 	}
 
 	return nil
+}
+
+func randIntn (n int) int {
+	rand.Seed(time.Now().UnixNano())
+	return rand.Intn(n)
 }

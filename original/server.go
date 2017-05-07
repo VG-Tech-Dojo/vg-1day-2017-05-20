@@ -71,8 +71,10 @@ func (s *Server) Init(dbconf, env string) error {
 	s.poster = p
 
 	// bot
-	b := bot.NewSimpleBot(msgStream, p.Input)
-	s.Bots = append(s.Bots, b)
+	simpleBot := bot.NewSimpleBot(msgStream, p.Input)
+	s.Bots = append(s.Bots, simpleBot)
+	omikujiBot := bot.NewOmikujiBot(msgStream, p.Input)
+	s.Bots = append(s.Bots, omikujiBot)
 
 	return nil
 }

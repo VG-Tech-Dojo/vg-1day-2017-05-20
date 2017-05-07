@@ -12,10 +12,29 @@ type (
 	// HelloWorldProcessor
 	// hello, world!メッセージを作成するProcessor
 	HelloWorldProcessor struct {}
+
+	// OmikujiProcessor
+	// 大吉、吉、中吉、小吉、末吉、凶のいずれかをランダムで返すProcessor
+	OmikujiProcessor struct {}
 )
 
 func (p *HelloWorldProcessor) Process(msgIn *model.Message) *model.Message {
 	return &model.Message{
 		Body: msgIn.Body + ", world!",
+	}
+}
+
+func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
+	fortunes := []string{
+		"大吉",
+		"吉",
+		"中吉",
+		"小吉",
+		"末吉",
+		"凶",
+	}
+    result := fortunes[randIntn(len(fortunes))]
+	return &model.Message{
+		Body: result,
 	}
 }

@@ -28,7 +28,7 @@ func (b *SimpleBot) Watch(ctx context.Context) {
 		case <-ctx.Done():
 			return
 		case m := <-b.in:
-			fmt.Printf("bot received: %v\n", m)
+			fmt.Printf("%s received: %v\n", b.name, m)
 
 			if b.checker.Check(m) {
 				b.Respond(m)
@@ -40,7 +40,7 @@ func (b *SimpleBot) Watch(ctx context.Context) {
 func (b *SimpleBot) Respond(m *model.Message) {
 	message := b.processor.Process(m)
 	b.out <- message
-	fmt.Printf("bot send: %v\n", message)
+	fmt.Printf("%s send: %v\n", b.name, message)
 }
 
 func NewSimpleBot(in chan *model.Message, out chan *model.Message) *SimpleBot {
@@ -57,8 +57,22 @@ func NewSimpleBot(in chan *model.Message, out chan *model.Message) *SimpleBot {
 	}
 }
 
+func NewOmikujiBot(in chan *model.Message, out chan *model.Message) *SimpleBot {
+	checker := NewRegexpChecker("\\Aomikuji\\z")
+
+	processor := &OmikujiProcessor{}
+
+	return &SimpleBot{
+		name: "omikujibot",
+		in:   in,
+		out:  out,
+		checker: checker,
+		processor: processor,
+	}
+}
+
 func (b *SimpleBot) Run(ctx context.Context) {
-	fmt.Println("bot start")
+	fmt.Printf("%s start\n", b.name)
 
 	// メッセージ監視
 	go b.Watch(ctx)
@@ -66,7 +80,7 @@ func (b *SimpleBot) Run(ctx context.Context) {
 	for {
 		select {
 		case <-ctx.Done():
-			fmt.Println("bot stop")
+			fmt.Printf("%s stop", b.name)
 			return
 		}
 	}
