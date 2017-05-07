@@ -10,23 +10,23 @@ const (
 
 type (
 	// Poster
-	// Inputに入ったメッセージをPostする
+	// Inに入ったメッセージをPOSTする
 	Poster struct {
-		Input chan *model.Message
+		In chan *model.Message
 	}
 )
 
 func (p *Poster) Run() {
-	for m := range p.Input {
-		output := model.Message{}
-		go postJson(postUrl, m, &output)
+	for m := range p.In {
+		out := &model.Message{}
+		go postJson(postUrl, m, out)
 	}
 }
 
 // posterの生成はこの関数を使う
-func NewPoster(buffer_size int) *Poster {
-	ch := make(chan *model.Message, buffer_size)
+func NewPoster(bufferSize int) *Poster {
+	in := make(chan *model.Message, bufferSize)
 	return &Poster{
-		Input: ch,
+		In: in,
 	}
 }

@@ -17,10 +17,11 @@ import (
 
 // Server is whole server implementation for this app
 type Server struct {
-	db     *sql.DB
-	Engine *gin.Engine
-	poster *bot.Poster
-	Bots   []bot.Bot
+	db          *sql.DB
+	Engine      *gin.Engine
+	broadcaster *bot.Broadcaster
+	poster      *bot.Poster
+	Bots        []*bot.Bot
 }
 
 func NewServer() *Server {
@@ -66,14 +67,18 @@ func (s *Server) Init(dbconf, env string) error {
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
 
+	// broadcaster
+	broadcaster := bot.NewBroadcaster(msgStream)
+	s.broadcaster = broadcaster
+
 	// poster
-	p := bot.NewPoster(10)
-	s.poster = p
+	poster := bot.NewPoster(10)
+	s.poster = poster
 
 	// bot
-	simpleBot := bot.NewSimpleBot(msgStream, p.Input)
+	simpleBot := bot.NewSimpleBot(s.poster.In)
 	s.Bots = append(s.Bots, simpleBot)
-	omikujiBot := bot.NewOmikujiBot(msgStream, p.Input)
+	omikujiBot := bot.NewOmikujiBot(s.poster.In)
 	s.Bots = append(s.Bots, omikujiBot)
 
 	return nil
@@ -87,12 +92,16 @@ func (s *Server) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	// broadcasterを起動
+	go s.broadcaster.Run()
+
 	// posterを起動
 	go s.poster.Run()
 
 	// botを起動
 	for _, b := range s.Bots {
 		go b.Run(ctx)
+		s.broadcaster.BotIn <- b
 	}
 
 	s.Engine.Run()
