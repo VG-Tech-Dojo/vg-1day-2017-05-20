@@ -72,3 +72,7 @@ curl_message_delete:
 ## Initialize database
 db_init:
 	cp -i _etc/seed.db dev.db
+
+## Build godoc server(http://localhost:6060)
+godoc_server:
+	godoc -http=:6060
