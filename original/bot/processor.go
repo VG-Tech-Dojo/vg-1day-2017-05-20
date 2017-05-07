@@ -1,6 +1,11 @@
 package bot
 
-import "github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
+import (
+	"regexp"
+	"strings"
+
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
+)
 
 type (
 	// messageを受け取り、投稿用messageを作るインターフェース
@@ -41,9 +46,13 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 	}
 }
 
-// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで作る
+// メッセージ本文からキーワードを抽出する
 func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Akeyword (.*)\\z")
+	// TODO: エラー処理
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	keywords := extractKeyword(matchedStrings[1])
 	return &model.Message{
-		Body: "this is keyword",
+		Body: "キーワード：" + strings.Join(keywords, ", "),
 	}
 }

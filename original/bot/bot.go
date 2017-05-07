@@ -83,7 +83,7 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 func NewKeywordBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 
-	checker := NewRegexpChecker("\\Akeyword\\z")
+	checker := NewRegexpChecker("\\Akeyword .*")
 
 	processor := &KeywordProcessor{}
 
