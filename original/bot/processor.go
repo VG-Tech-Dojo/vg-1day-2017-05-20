@@ -13,6 +13,9 @@ type (
 
 	// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで作るprocessor
 	OmikujiProcessor struct {}
+
+	// メッセージ本文からキーワードを抽出するprocessor
+	KeywordProcessor struct {}
 )
 
 // "hello, world!"メッセージを作る
@@ -35,5 +38,12 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
     result := fortunes[randIntn(len(fortunes))]
 	return &model.Message{
 		Body: result,
+	}
+}
+
+// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで作る
+func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
+	return &model.Message{
+		Body: "this is keyword",
 	}
 }
