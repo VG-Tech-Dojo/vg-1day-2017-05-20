@@ -14,13 +14,13 @@ type (
 	}
 
 	// "hello, world!"メッセージを作るprocessor
-	HelloWorldProcessor struct {}
+	HelloWorldProcessor struct{}
 
 	// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで作るprocessor
-	OmikujiProcessor struct {}
+	OmikujiProcessor struct{}
 
 	// メッセージ本文からキーワードを抽出するprocessor
-	KeywordProcessor struct {}
+	KeywordProcessor struct{}
 )
 
 // "hello, world!"メッセージを作る
@@ -40,7 +40,7 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 		"末吉",
 		"凶",
 	}
-    result := fortunes[randIntn(len(fortunes))]
+	result := fortunes[randIntn(len(fortunes))]
 	return &model.Message{
 		Body: result,
 	}

@@ -17,7 +17,7 @@ type (
 	// 	   msgIn chan *model.Message
 	Broadcaster struct {
 		BotIn chan *Bot
-		bots  map[*Bot]bool
+		bots  []*Bot
 		msgIn chan *model.Message
 	}
 )
@@ -27,9 +27,9 @@ func (b *Broadcaster) Run() {
 	for {
 		select {
 		case bot := <-b.BotIn:
-			b.bots[bot] = true
+			b.bots = append(b.bots, bot)
 		case msg := <-b.msgIn:
-			for bot, _ := range b.bots {
+			for _, bot := range b.bots {
 				bot.in <- msg
 			}
 		}
@@ -41,7 +41,7 @@ func NewBroadcaster(msgIn chan *model.Message) *Broadcaster {
 	memberIn := make(chan *Bot)
 	return &Broadcaster{
 		BotIn: memberIn,
-		bots:  make(map[*Bot]bool),
+		bots:  []*Bot{},
 		msgIn: msgIn,
 	}
 }
