@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"io/ioutil"
-	"net/http"
 	"math/rand"
+	"net/http"
 	"time"
 
 	"github.com/pkg/errors"
@@ -37,7 +37,7 @@ func postJson(url string, input interface{}, output interface{}) error {
 }
 
 // 0からn-1までのintの乱数を返す
-func randIntn (n int) int {
+func randIntn(n int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(n)
 }
