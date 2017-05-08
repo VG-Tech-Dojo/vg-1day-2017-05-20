@@ -1,21 +1,27 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"flag"
 	"log"
 	"net/http"
 
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/bot"
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/controller"
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/db"
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 // Server is whole server implementation for this app
 type Server struct {
-	db     *sql.DB
-	Engine *gin.Engine
+	db          *sql.DB
+	Engine      *gin.Engine
+	broadcaster *bot.Broadcaster
+	poster      *bot.Poster
+	bots        []*bot.Bot
 }
 
 func NewServer() *Server {
@@ -52,12 +58,26 @@ func (s *Server) Init(dbconf, env string) error {
 	api.GET("/ping", func(c *gin.Context) {
 		c.String(http.StatusOK, "pong")
 	})
-	mctr := &controller.Message{DB: db}
+
+	msgStream := make(chan *model.Message)
+	mctr := &controller.Message{DB: db, Stream: msgStream}
 	api.GET("/messages", mctr.All)
 	api.GET("/messages/:id", mctr.GetByID)
 	api.POST("/messages", mctr.Create)
 	api.PUT("/messages/:id", mctr.UpdateByID)
 	api.DELETE("/messages/:id", mctr.DeleteByID)
+
+	// bot
+	broadcaster := bot.NewBroadcaster(msgStream)
+	s.broadcaster = broadcaster
+
+	poster := bot.NewPoster(10)
+	s.poster = poster
+
+	helloWorldBot := bot.NewHelloWorldBot(s.poster.In)
+	s.bots = append(s.bots, helloWorldBot)
+	omikujiBot := bot.NewOmikujiBot(s.poster.In)
+	s.bots = append(s.bots, omikujiBot)
 
 	return nil
 }
@@ -67,6 +87,19 @@ func (s *Server) Close() error {
 }
 
 func (s *Server) Run() {
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
+	// botを起動
+	go s.broadcaster.Run()
+
+	go s.poster.Run()
+
+	for _, b := range s.bots {
+		go b.Run(ctx)
+		s.broadcaster.BotIn <- b
+	}
+
 	s.Engine.Run()
 }
 
@@ -79,8 +112,9 @@ func main() {
 
 	s := NewServer()
 	if err := s.Init(*dbconf, *env); err != nil {
-		log.Fatalf("fail to start server: ", err)
+		log.Fatalf("fail to init server: %s", err)
 	}
 	defer s.Close()
+
 	s.Run()
 }

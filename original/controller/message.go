@@ -12,7 +12,8 @@ import (
 
 // Message is controller for requests to messages
 type Message struct {
-	DB *sql.DB
+	DB     *sql.DB
+	Stream chan *model.Message
 }
 
 func (m *Message) All(c *gin.Context) {
@@ -76,6 +77,9 @@ func (m *Message) Create(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
+
+	// bot対応
+	m.Stream <- inserted
 
 	c.JSON(http.StatusCreated, gin.H{
 		"result": inserted,
