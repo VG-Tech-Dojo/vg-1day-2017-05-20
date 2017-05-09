@@ -12,7 +12,7 @@ import (
 )
 
 // inputをJSON形式でurlにPOSTする
-func postJson(url string, input interface{}, output interface{}) error {
+func postJSON(url string, input interface{}, output interface{}) error {
 	data, err := json.Marshal(input)
 	if err != nil {
 		return errors.Wrapf(err, "failed to decode json. data: %v", input)
