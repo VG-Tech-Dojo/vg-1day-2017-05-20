@@ -15,6 +15,7 @@ deps:
 	which dep || go get -u github.com/golang/dep/...
 	which sql-migrate || go get -u github.com/rubenv/sql-migrate/...
 	which fresh || go get -u github.com/pilu/fresh
+	which golint || go get -u github.com/golang/lint/golint
 
 ## Install dependency packages, cache compiled packages
 install: deps
@@ -28,6 +29,18 @@ build:
 ## Live reload
 watch:
 	fresh
+
+## Check code format
+check: fmt vet lint
+
+fmt:
+	go fmt $$(go list ./... | grep -v vendor)
+
+vet:
+	go vet $$(go list ./... | grep -v vendor)
+
+lint:
+	golint $$(go list ./... | grep -v vendor)
 
 clean: clean_vendor
 
