@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	postUrl = "http://localhost:8080/api/messages"
+	postURL = "http://localhost:8080/api/messages"
 )
 
 type (
@@ -19,7 +19,7 @@ type (
 func (p *Poster) Run() {
 	for m := range p.In {
 		out := &model.Message{}
-		go postJson(postUrl, m, out)
+		go postJSON(postURL, m, out)
 	}
 }
 
