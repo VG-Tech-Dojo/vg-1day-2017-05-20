@@ -5,7 +5,7 @@ import (
 )
 
 type (
-	// 1つのチャンネルで複数botを動かすためのヘルパー
+	// Broadcaster は1つのチャンネルで複数botを動かすためのヘルパーです
 	//
 	// msgInで受け取ったmessageをbotsに登録された全botに渡す
 	//
@@ -22,7 +22,7 @@ type (
 	}
 )
 
-// broadcasterを起動する
+// Run はBroadcasterを起動します
 func (b *Broadcaster) Run() {
 	for {
 		select {
@@ -36,7 +36,7 @@ func (b *Broadcaster) Run() {
 	}
 }
 
-// broadcasterのインスタンス生成はこの関数を使う
+// NewBroadcaster は新しいBroadcaster構造体のポインタを返します
 func NewBroadcaster(msgIn chan *model.Message) *Broadcaster {
 	memberIn := make(chan *Bot)
 	return &Broadcaster{

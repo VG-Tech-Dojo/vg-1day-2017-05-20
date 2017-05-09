@@ -4,6 +4,7 @@ import (
 	"database/sql"
 )
 
+// Message はメッセージの構造体です
 type Message struct {
 	ID   int64  `json:"id"`
 	Body string `json:"body"`
@@ -47,7 +48,7 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 	return m, nil
 }
 
-// Insertはmessageテーブルに新規データを1件追加します
+// Insert はmessageテーブルに新規データを1件追加します
 func (m *Message) Insert(db *sql.DB) (*Message, error) {
 	// 1-2. ユーザー名を追加しよう
 	res, err := db.Exec(`insert into message (body) values (?)`, m.Body)

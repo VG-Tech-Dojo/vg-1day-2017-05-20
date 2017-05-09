@@ -15,7 +15,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// Server is whole server implementation for this app
+// Server はAPIサーバーが実装された構造体です
 type Server struct {
 	db          *sql.DB
 	Engine      *gin.Engine
@@ -24,12 +24,14 @@ type Server struct {
 	bots        []*bot.Bot
 }
 
+// NewServer は新しいServerの構造体のポインタを返します
 func NewServer() *Server {
 	return &Server{
 		Engine: gin.Default(),
 	}
 }
 
+// Init はサーバーを初期化します
 func (s *Server) Init(dbconf, env string) error {
 	cs, err := db.NewConfigsFromFile(dbconf)
 	if err != nil {
@@ -82,10 +84,12 @@ func (s *Server) Init(dbconf, env string) error {
 	return nil
 }
 
+// Close はDBとの接続を閉じてサーバーを終了します
 func (s *Server) Close() error {
 	return s.db.Close()
 }
 
+// Run はサーバーを起動します
 func (s *Server) Run() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
