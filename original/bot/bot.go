@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	// inで受け取ったmessageがcheckerの条件を満たした場合、processorが投稿用messageを作り、outに渡す
+	// Bot はinで受け取ったmessageがcheckerの条件を満たした場合、processorが投稿用messageを作り、outに渡す
 	//
 	//   fields
 	//     name      string
@@ -25,7 +25,7 @@ type (
 	}
 )
 
-// botを起動する
+// Run はBotを起動します
 func (b *Bot) Run(ctx context.Context) {
 	fmt.Printf("%s start\n", b.name)
 
@@ -45,7 +45,7 @@ func (b *Bot) Run(ctx context.Context) {
 	}
 }
 
-// "hello"を受け取ると"hello, world!"を返すbot
+// NewHelloWorldBot は"hello"を受け取ると"hello, world!"を返す新しいBotの構造体のポインタを返します
 func NewHelloWorldBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 
@@ -62,7 +62,7 @@ func NewHelloWorldBot(out chan *model.Message) *Bot {
 	}
 }
 
-// "大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで返すbot
+// NewOmikujiBot は"大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで返す新しいBotの構造体のポインタを返します
 func NewOmikujiBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 

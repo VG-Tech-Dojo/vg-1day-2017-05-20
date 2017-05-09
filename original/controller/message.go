@@ -16,6 +16,7 @@ type Message struct {
 	Stream chan *model.Message
 }
 
+// All は全てのメッセージを取得してJSONで返します
 func (m *Message) All(c *gin.Context) {
 	msgs, err := model.MessagesAll(m.DB)
 	if err != nil {
@@ -35,6 +36,7 @@ func (m *Message) All(c *gin.Context) {
 	})
 }
 
+// GetByID はパラメーターで受け取ったidのメッセージを取得してJSONで返します
 func (m *Message) GetByID(c *gin.Context) {
 	msg, err := model.MessageByID(m.DB, c.Param("id"))
 
@@ -55,6 +57,7 @@ func (m *Message) GetByID(c *gin.Context) {
 	})
 }
 
+// Create は新しいメッセージ保存し、作成したメッセージをJSONで返します
 func (m *Message) Create(c *gin.Context) {
 	var msg model.Message
 	if err := c.BindJSON(&msg); err != nil {
@@ -87,12 +90,14 @@ func (m *Message) Create(c *gin.Context) {
 	})
 }
 
+// UpdateByID は...
 func (m *Message) UpdateByID(c *gin.Context) {
 	// 1-3. メッセージを編集しよう
 	// ...
 	c.JSON(http.StatusCreated, gin.H{})
 }
 
+// DeleteByID は...
 func (m *Message) DeleteByID(c *gin.Context) {
 	// 1-4. メッセージを削除しよう
 	// ...

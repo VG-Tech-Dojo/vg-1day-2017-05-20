@@ -7,23 +7,23 @@ import (
 )
 
 type (
-	// messageを受け取り、条件を満たすか判定するインターフェース
+	// Checker はmessageを受け取り、条件を満たすか判定するインターフェースです
 	Checker interface {
 		Check(*model.Message) bool
 	}
 
-	// 正規表現を満たす場合true、そうでない場合falseを返すchecker
+	// RegexpChecker は 正規表現を満たす場合true、そうでない場合falseを返す構造体です
 	RegexpChecker struct {
 		regexp *regexp.Regexp
 	}
 )
 
-// 正規表現を満たす場合true、そうでない場合falseを返す
+// Check は正規表現を満たす場合true、そうでない場合falseを返す
 func (c *RegexpChecker) Check(m *model.Message) bool {
 	return c.regexp.MatchString(m.Body)
 }
 
-// NewRegexpCheckerのインスタンス生成はこの関数を使う
+// NewRegexpChecker は新しいRegexpChecker構造体のポインタを返します
 func NewRegexpChecker(pattern string) *RegexpChecker {
 	r := regexp.MustCompile(pattern)
 	return &RegexpChecker{
