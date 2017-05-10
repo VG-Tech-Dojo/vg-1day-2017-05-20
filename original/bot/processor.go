@@ -4,7 +4,13 @@ import (
 	"regexp"
 	"strings"
 
+	"fmt"
+	"github.com/VG-Tech-Dojo/vg-1day-2017/original/env"
 	"github.com/VG-Tech-Dojo/vg-1day-2017/original/model"
+)
+
+const (
+	keywordApiUrlFormat = "https://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid=%s&sentence=%s&output=json"
 )
 
 type (
@@ -51,7 +57,18 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 	r := regexp.MustCompile("\\Akeyword (.*)\\z")
 	// TODO: エラー処理
 	matchedStrings := r.FindStringSubmatch(msgIn.Body)
-	keywords := extractKeyword(matchedStrings[1])
+	text := matchedStrings[1]
+
+	url := fmt.Sprintf(keywordApiUrlFormat, env.KeywordApiAppId, text)
+
+	json := map[string]int{}
+	getJSON(url, &json)
+
+	keywords := []string{}
+	for keyword := range map[string]int(json) {
+		keywords = append(keywords, keyword)
+	}
+
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
 	}
