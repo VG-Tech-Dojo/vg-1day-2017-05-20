@@ -3,11 +3,12 @@
   border-bottom: 1px solid #eee;
 }
 
-.message .remove-message-button {
+.message-body .action-button {
   visibility: hidden;
 }
 
-.message:hover .remove-message-button {
+.message-body:hover .action-button {
   color: #c1c1c1;
   visibility: visible;
+  cursor: pointer;
 }
