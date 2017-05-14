@@ -12,12 +12,21 @@ import (
 
 // getJSON はurlにGETする
 func getJSON(url string, out interface{}) error {
-	// TODO: エラー処理
-	resp, _ := http.Get(url)
+	resp, err := http.Get(url)
+	if err != nil {
+		return errors.Wrapf(err, "GET url: %v", url)
+	}
 	defer resp.Body.Close()
 
-	respBody, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(respBody, out)
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+	}
+
+	err = json.Unmarshal(respBody, out)
+	if err != nil {
+		return errors.Wrapf(err, "failed to encode json. json: %v", &out)
+	}
 
 	return nil
 }

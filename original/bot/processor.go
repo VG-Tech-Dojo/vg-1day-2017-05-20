@@ -55,7 +55,6 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 // メッセージ本文からキーワードを抽出する
 func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 	r := regexp.MustCompile("\\Akeyword (.*)\\z")
-	// TODO: エラー処理
 	matchedStrings := r.FindStringSubmatch(msgIn.Body)
 	text := matchedStrings[1]
 
