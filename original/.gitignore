@@ -3,3 +3,4 @@ server
 tmp/
 
 .idea
+dev.db

@@ -6,7 +6,7 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: install
+server: install dev.db
 	go run server.go
 
 ## Install dependency tools
@@ -27,7 +27,7 @@ build:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
 
 ## Live reload
-watch:
+watch: dev.db
 	fresh
 
 ## Check code format
@@ -81,6 +81,9 @@ curl_message_put:
 
 curl_message_delete:
 	curl -i -X DELETE $(host)/api/messages/$(id) -d '{"body": "$(body)"}'
+
+dev.db:
+	$(MAKE) db_init
 
 ## Initialize database
 db_init:
