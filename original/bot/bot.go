@@ -79,6 +79,23 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 	}
 }
 
+// メッセージ本文からキーワードを抽出して返すbot
+func NewKeywordBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Akeyword .*")
+
+	processor := &KeywordProcessor{}
+
+	return &Bot{
+		name:      "keywordbot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
+
 func (b *Bot) respond(m *model.Message) {
 	message := b.processor.Process(m)
 	b.out <- message

@@ -3,13 +3,33 @@ package bot
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
 	"time"
-
-	"github.com/pkg/errors"
 )
+
+// getJSON はurlにGETする
+func getJSON(url string, out interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return errors.Wrapf(err, "GET url: %v", url)
+	}
+	defer resp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+	}
+
+	err = json.Unmarshal(respBody, out)
+	if err != nil {
+		return errors.Wrapf(err, "failed to encode json. json: %v", &out)
+	}
+
+	return nil
+}
 
 // inputをJSON形式でurlにPOSTする
 func postJSON(url string, input interface{}, output interface{}) error {
