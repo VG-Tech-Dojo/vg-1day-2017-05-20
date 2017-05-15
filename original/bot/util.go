@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// getJSON はurlにGETする
+// getJSON はurlにGETします
 func getJSON(url string, out interface{}) error {
 	resp, err := http.Get(url)
 	if err != nil {
@@ -31,7 +31,7 @@ func getJSON(url string, out interface{}) error {
 	return nil
 }
 
-// inputをJSON形式でurlにPOSTする
+// postJSON はinputをJSON形式でurlにPOSTします
 func postJSON(url string, input interface{}, output interface{}) error {
 	data, err := json.Marshal(input)
 	if err != nil {
@@ -56,7 +56,7 @@ func postJSON(url string, input interface{}, output interface{}) error {
 	return nil
 }
 
-// 0からn-1までのintの乱数を返す
+// randIntn は0からn-1までのintの乱数を返します
 func randIntn(n int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(n)

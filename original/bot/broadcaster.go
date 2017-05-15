@@ -7,9 +7,9 @@ import (
 type (
 	// Broadcaster は1つのチャンネルで複数botを動かすためのヘルパーです
 	//
-	// msgInで受け取ったmessageをbotsに登録された全botに渡す
+	// msgInで受け取ったmessageをbotsに登録された全botに渡します
 	//
-	// botsへの登録はBotInで行う
+	// botsへの登録はBotInで行います
 	//
 	//   fields
 	// 	   BotIn chan *Bot

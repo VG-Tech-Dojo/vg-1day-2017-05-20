@@ -25,7 +25,7 @@ type (
 	// OmikujiProcessor は"大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで作るprocessorの構造体です
 	OmikujiProcessor struct{}
 
-	// メッセージ本文からキーワードを抽出するprocessor
+	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
 )
 
@@ -52,7 +52,7 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 	}
 }
 
-// メッセージ本文からキーワードを抽出する
+// Process はメッセージ本文からキーワードを抽出します
 func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 	r := regexp.MustCompile("\\Akeyword (.*)\\z")
 	matchedStrings := r.FindStringSubmatch(msgIn.Body)

@@ -15,7 +15,7 @@ type (
 	}
 )
 
-// Run はPosterを起動する
+// Run はPosterを起動します
 func (p *Poster) Run() {
 	for m := range p.In {
 		out := &model.Message{}
