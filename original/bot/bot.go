@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	// Bot はinで受け取ったmessageがcheckerの条件を満たした場合、processorが投稿用messageを作り、outに渡す
+	// Bot はinで受け取ったmessageがcheckerの条件を満たした場合、processorが投稿用messageを作り、outに渡します
 	//
 	//   fields
 	//     name      string
@@ -79,7 +79,7 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 	}
 }
 
-// メッセージ本文からキーワードを抽出して返すbot
+// NewKeywordBot はメッセージ本文からキーワードを抽出して返す新しいBotの構造体にポインタを返します
 func NewKeywordBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 

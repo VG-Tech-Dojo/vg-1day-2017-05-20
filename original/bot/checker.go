@@ -18,7 +18,7 @@ type (
 	}
 )
 
-// Check は正規表現を満たす場合true、そうでない場合falseを返す
+// Check は正規表現を満たす場合true、そうでない場合falseを返します
 func (c *RegexpChecker) Check(m *model.Message) bool {
 	return c.regexp.MatchString(m.Body)
 }
