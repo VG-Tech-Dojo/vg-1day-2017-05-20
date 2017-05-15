@@ -1,14 +1,23 @@
+SED=$(shell which sed)
 .DEFAULT_GOAL := help
 background_option=-d
 nickname=
 repository_name=$(shell basename $(PWD))
 
-setup:
+setup/bsd: $(nickname) ## for mac
+	$(SED) -i '' -e 's/original/$(nickname)/g' ./$(nickname)/*.go
+	$(SED) -i '' -e 's/original/$(nickname)/g' ./$(nickname)/**/*.go
+	$(SED) -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/*.go
+	$(SED) -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/**/*.go
+
+setup/gnu: $(nickname) ## for linux
+	$(SED) --in-place 's/original/$(nickname)/g' ./$(nickname)/*.go
+	$(SED) --in-place 's/original/$(nickname)/g' ./$(nickname)/**/*.go
+	$(SED) --in-place 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/*.go
+	$(SED) --in-place 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/**/*.go
+
+$(nickname):
 	cp -rf original $(nickname)
-	sed -i '' -e 's/original/$(nickname)/g' ./$(nickname)/*.go
-	sed -i '' -e 's/original/$(nickname)/g' ./$(nickname)/**/*.go
-	sed -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/*.go
-	sed -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/**/*.go
 
 docker_server: docker_build docker_up
 
