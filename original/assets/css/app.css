@@ -4,11 +4,11 @@
 }
 
 .message-body .action-button {
-  visibility: hidden;
+  margin: 0px 3px;
+  color: #c1c1c1;
+  cursor: pointer;
 }
 
-.message-body:hover .action-button {
-  color: #c1c1c1;
-  visibility: visible;
-  cursor: pointer;
+.message-body .action-button:hover {
+  color: #444444;
 }

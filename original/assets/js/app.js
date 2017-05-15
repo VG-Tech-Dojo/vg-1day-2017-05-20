@@ -26,8 +26,8 @@
       </div>
       <div class="message-body" v-else>
         <span>{{ displayedBody }}</span>
-        <span class="action-button u-pull-right" v-on:click="edit">e</span>
-        <span class="action-button u-pull-right" v-on:click="remove">x</span>
+        <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
+        <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
       </div>
     </div>
   `,
@@ -96,9 +96,9 @@
         })
         .then(response => response.json())
       },
-      updateMessage(id) {
+      updateMessage(id, message) {
         return fetch(`/api/messages/${id}`, {
-          method: 'PUT'
+          method: 'PUT',
         })
         .then(response => response.json())
       },
