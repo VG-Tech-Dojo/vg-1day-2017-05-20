@@ -47,7 +47,7 @@
         this.editedBody = null
       },
       doneEdit() {
-        this.updateMessage(this.id, this.editedBody)
+        this.updateMessage({id: this.id, body: this.editedBody})
           .then(data => {
             console.log('Updating message')
             this.cancelEdit()
@@ -96,9 +96,10 @@
         })
         .then(response => response.json())
       },
-      updateMessage(id, message) {
-        return fetch(`/api/messages/${id}`, {
+      updateMessage(message) {
+        return fetch(`/api/messages/${message.id}`, {
           method: 'PUT',
+          body: JSON.stringify(message),
         })
         .then(response => response.json())
       },
