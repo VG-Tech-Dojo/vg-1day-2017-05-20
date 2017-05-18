@@ -7,14 +7,36 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"net/url"
 	"time"
 )
 
-// getJSON はurlにGETします
-func getJSON(url string, out interface{}) error {
+// get はurlにGETします
+func get(url string, out interface{}) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return errors.Wrapf(err, "GET url: %v", url)
+	}
+	defer resp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+	}
+
+	err = json.Unmarshal(respBody, out)
+	if err != nil {
+		return errors.Wrapf(err, "failed to encode json. json: %v", &out)
+	}
+
+	return nil
+}
+
+// post はurlにGETします
+func post(url string, params url.Values, out interface{}) error {
+	resp, err := http.PostForm(url, params)
+	if err != nil {
+		return errors.Wrapf(err, "POST url: %v, params: %v", url, params)
 	}
 	defer resp.Body.Close()
 
