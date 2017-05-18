@@ -32,7 +32,7 @@ func get(url string, out interface{}) error {
 	return nil
 }
 
-// post はurlにGETします
+// post はurlにparamsをPOSTします
 func post(url string, params url.Values, out interface{}) error {
 	resp, err := http.PostForm(url, params)
 	if err != nil {
