@@ -6,7 +6,7 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: install dev.db
+server: install dev.db env_init
 	go run server.go
 
 ## Install dependency tools
@@ -88,6 +88,10 @@ dev.db:
 ## Initialize database
 db_init:
 	cp -i _etc/seed.db dev.db
+
+## Initialize environment configuration file
+env_init:
+	test -e env/env.go || cp env/env.go.tmpl env/env.go
 
 ## Build godoc server(http://localhost:6060)
 godoc_server:
