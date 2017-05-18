@@ -79,7 +79,7 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 	}
 }
 
-// NewKeywordBot はメッセージ本文からキーワードを抽出して返す新しいBotの構造体にポインタを返します
+// NewKeywordBot はメッセージ本文からキーワードを抽出して返す新しいBotの構造体のポインタを返します
 func NewKeywordBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
 

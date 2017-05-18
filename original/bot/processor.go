@@ -61,7 +61,7 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 	url := fmt.Sprintf(keywordApiUrlFormat, env.KeywordApiAppId, text)
 
 	json := map[string]int{}
-	getJSON(url, &json)
+	get(url, &json)
 
 	keywords := []string{}
 	for keyword := range map[string]int(json) {
