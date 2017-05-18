@@ -24,6 +24,7 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	var ms []*Message
 	for rows.Next() {
 		m := &Message{}
+		// 1-1. ユーザー名を表示しよう
 		if err := rows.Scan(&m.ID, &m.Body); err != nil {
 			return nil, err
 		}
