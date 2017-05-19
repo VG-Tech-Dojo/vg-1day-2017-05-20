@@ -3,7 +3,6 @@ package bot
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/pkg/errors"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -15,18 +14,18 @@ import (
 func get(url string, out interface{}) error {
 	resp, err := http.Get(url)
 	if err != nil {
-		return errors.Wrapf(err, "GET url: %v", url)
+		return err
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+		return err
 	}
 
 	err = json.Unmarshal(respBody, out)
 	if err != nil {
-		return errors.Wrapf(err, "failed to encode json. json: %v", &out)
+		return err
 	}
 
 	return nil
@@ -36,18 +35,18 @@ func get(url string, out interface{}) error {
 func post(url string, params url.Values, out interface{}) error {
 	resp, err := http.PostForm(url, params)
 	if err != nil {
-		return errors.Wrapf(err, "POST url: %v, params: %v", url, params)
+		return err
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+		return err
 	}
 
 	err = json.Unmarshal(respBody, out)
 	if err != nil {
-		return errors.Wrapf(err, "failed to encode json. json: %v", &out)
+		return err
 	}
 
 	return nil
@@ -57,22 +56,22 @@ func post(url string, params url.Values, out interface{}) error {
 func postJSON(url string, input interface{}, output interface{}) error {
 	data, err := json.Marshal(input)
 	if err != nil {
-		return errors.Wrapf(err, "failed to decode json. data: %v", input)
+		return err
 	}
 
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(data))
 	if err != nil {
-		return errors.Wrapf(err, "POST message: %v", data)
+		return err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return errors.Wrapf(err, "failed to read response. response: %v", resp)
+		return err
 	}
 
 	err = json.Unmarshal(body, &output)
 	if err != nil {
-		return errors.Wrapf(err, "failed to encode json. json: %v", &output)
+		return err
 	}
 
 	return nil

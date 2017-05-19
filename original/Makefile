@@ -6,8 +6,12 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: install dev.db env_init
+server:
 	go run server.go
+
+## Live reload
+watch:
+	fresh
 
 ## Install dependency tools
 deps:
@@ -18,17 +22,13 @@ deps:
 	which golint || go get -u github.com/golang/lint/golint
 
 ## Install dependency packages, cache compiled packages
-install: deps
+install: deps env/env.go dev.db 
 	dep ensure
 	go install
 
 ## Build app
 build:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
-
-## Live reload
-watch: dev.db
-	fresh
 
 ## Check code format
 check: fmt vet lint
@@ -90,8 +90,8 @@ db_init:
 	cp -i _etc/seed.db dev.db
 
 ## Initialize environment configuration file
-env_init:
-	test -e env/env.go || cp env/env.go.tmpl env/env.go
+env/env.go:
+	cp env/env.go.tmpl env/env.go
 
 ## Build godoc server(http://localhost:6060)
 godoc_server:
