@@ -6,8 +6,12 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: install
+server:
 	go run server.go
+
+## Live reload
+watch:
+	fresh
 
 ## Install dependency tools
 deps:
@@ -25,10 +29,6 @@ install: deps env/env.go dev.db
 ## Build app
 build:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
-
-## Live reload
-watch:
-	fresh
 
 ## Check code format
 check: fmt vet lint
