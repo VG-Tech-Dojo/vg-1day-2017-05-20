@@ -6,7 +6,7 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: env/env.go dev.db install
+server: install
 	go run server.go
 
 ## Install dependency tools
@@ -18,7 +18,7 @@ deps:
 	which golint || go get -u github.com/golang/lint/golint
 
 ## Install dependency packages, cache compiled packages
-install: deps
+install: deps env/env.go dev.db 
 	dep ensure
 	go install
 
@@ -27,7 +27,7 @@ build:
 	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -ldflags "-X=main.version=$(VERSION)" server.go
 
 ## Live reload
-watch: dev.db
+watch:
 	fresh
 
 ## Check code format

@@ -4,7 +4,7 @@ background_option=-d
 nickname=
 repository_name=$(shell basename $(PWD))
 
-setup/mac:
+setup/mac: $(nickname)
 	$(MAKE) setup/bsd
 
 setup/bsd: $(nickname) ## for mac
@@ -12,12 +12,14 @@ setup/bsd: $(nickname) ## for mac
 	$(SED) -i '' -e 's/original/$(nickname)/g' ./$(nickname)/**/*.go
 	$(SED) -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/*.go
 	$(SED) -i '' -e 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/**/*.go
+	$(MAKE) -C $(nickname) install
 
 setup/gnu: $(nickname) ## for linux
 	$(SED) --in-place 's/original/$(nickname)/g' ./$(nickname)/*.go
 	$(SED) --in-place 's/original/$(nickname)/g' ./$(nickname)/**/*.go
 	$(SED) --in-place 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/*.go
 	$(SED) --in-place 's/vg-1day-2017/$(repository_name)/g' ./$(nickname)/**/*.go
+	$(MAKE) -C $(nickname) install
 
 $(nickname):
 	cp -rf original $(nickname)
