@@ -6,7 +6,7 @@ VERSION = $(shell git rev-parse HEAD)
 ENV = test
 host=localhost:8080
 
-server: install dev.db env_init
+server: env_init dev.db install
 	go run server.go
 
 ## Install dependency tools
