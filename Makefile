@@ -4,6 +4,9 @@ background_option=-d
 nickname=
 repository_name=$(shell basename $(PWD))
 
+setup/mac: $(nickname)
+	$(MAKE) setup/bsd
+
 setup/bsd: $(nickname) ## for mac
 	$(SED) -i '' -e 's/original/$(nickname)/g' ./$(nickname)/*.go
 	$(SED) -i '' -e 's/original/$(nickname)/g' ./$(nickname)/**/*.go
