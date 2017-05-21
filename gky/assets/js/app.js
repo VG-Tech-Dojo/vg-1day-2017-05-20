@@ -6,12 +6,13 @@
 
   Vue.component('message', {
     // 1-1. ユーザー名を表示しよう
-    props: ['id', 'body', 'removeMessage', 'updateMessage'],
+    props: ['id', 'body', 'sender_name', 'removeMessage', 'updateMessage'],
     data() {
       return {
         editing: false,
         editedBody: null,
         displayedBody: this.body,
+        displayedSenderName: this.sender_name,
       }
     },
     // 1-1. ユーザー名を表示しよう
@@ -26,6 +27,7 @@
       </div>
       <div class="message-body" v-else>
         <span>{{ displayedBody }}</span>
+        <span>@{{ displayedSenderName }}</span>
         <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
         <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
       </div>

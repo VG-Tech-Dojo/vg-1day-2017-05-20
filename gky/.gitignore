@@ -4,3 +4,6 @@ tmp/
 
 .idea
 dev.db
+
+*.swp
+
