@@ -108,7 +108,7 @@ func (p *HomeProcessor) Process(msgIn *model.Message) *model.Message {
 	} else {
 		msg = "暑くてたまらない"
 	}
-	msg = fmt.Sprintf("湿度: %f%%, 温度: %f°   %s",json.Humidity, json.Temperature, msg)
+	msg = fmt.Sprintf("温度: %.0f°, 湿度: %.0f%%, 不快指数: %.3f, メッセージ: %s", temp, humid, DI, msg)
 	return &model.Message{
 		Body: "home：" + msg,
 	}
