@@ -86,7 +86,28 @@ func (p *HomeProcessor) Process(msgIn *model.Message) *model.Message {
 	json := HomeJson{}
 	get("http://192.168.100.150:5000", &json)
 
-	msg := "快適です"
+	temp := json.Temperature
+	humid := json.Humidity
+
+	DI := 0.81 * temp + 0.01 * humid * (0.99 * temp - 14.3) + 46.3
+	var msg string
+	if DI < 55 {
+		msg = "寒い"
+	} else if DI < 60 {
+		msg = "肌寒い"
+	} else if DI < 65 {
+		msg = "何も感じない"
+	} else if DI < 70{
+		msg = "快い"
+	} else if DI < 75{
+		msg = "暑くない"
+	} else if DI < 80{
+		msg = "やや暑い"
+	} else if DI < 85{
+		msg = "暑くて汗が出る"
+	} else {
+		msg = "暑くてたまらない"
+	}
 	msg = fmt.Sprintf("湿度: %f%%, 温度: %f°   %s",json.Humidity, json.Temperature, msg)
 	return &model.Message{
 		Body: "home：" + msg,
