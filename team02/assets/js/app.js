@@ -26,8 +26,8 @@
       </div>
       <div class="message-body" v-else>
         <span>{{ displayedBody }}</span>
-        <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
-        <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
+        <span class="action-button u-pull-right strongblue" v-on:click="edit">&#9998;</span>
+        <span class="action-button u-pull-right strongblue" v-on:click="remove">&#10007;</span>
       </div>
     </div>
   `,

@@ -1,6 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .message {
   padding: 10px 10px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #5C97BF;
 }
 
 .message-body .action-button {
@@ -11,4 +17,24 @@
 
 .message-body .action-button:hover {
   color: #444444;
+}
+
+#title {
+  display: inline-block;
+  color: #1F3A93;
+}
+
+.title-img {
+  display: inline-block;
+  width: 40px;
+  height: 60px;
+  padding-top: 20px;
+}
+
+.message {
+  background-color: #E4F1FE;
+}
+
+.strongblue {
+  color: #1F3A93;
 }
