@@ -118,3 +118,19 @@ func NewGachaBot(out chan *model.Message) *Bot {
 		processor: processor,
 	}
 }
+// to-ku
+func NewTalkBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Atalk .*\\z")
+
+	processor := &TalkProcessor{}
+
+	return &Bot{
+		name:      "talk",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
