@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/group-4/env"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/group-4/model"
+  "unicode/utf8"
+  "strconv"
 )
 
 const (
@@ -38,6 +40,7 @@ func (p *HelloWorldProcessor) Process(msgIn *model.Message) *model.Message {
 
 // Process は"大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかがbodyにセットされたメッセージへのポインタを返します
 func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
+
 	fortunes := []string{
 		"大吉",
 		"吉",
@@ -46,7 +49,22 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 		"末吉",
 		"凶",
 	}
-	result := fortunes[randIntn(len(fortunes))]
+
+  seed := 0
+  for len(msgIn.Body) > 0 {
+    r, size := utf8.DecodeRuneInString(msgIn.Body)
+    rc := fmt.Sprintf("%d", r)
+    fmt.Println(rc)
+    rci, _ := strconv.Atoi(rc)
+    seed = seed + rci
+    msgIn.Body = msgIn.Body[size:]
+  }
+
+  fmt.Println(seed)
+  seed = seed % len(fortunes)
+
+	//result := fortunes[randIntn(len(fortunes))]
+	result := fortunes[seed]
 	return &model.Message{
 		Body: result,
 	}
