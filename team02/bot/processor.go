@@ -29,6 +29,12 @@ type (
 	KeywordProcessor struct{}
 
 	HomeProcessor struct {}
+
+	HomeJson struct {
+		Humidity float64 `json:"humidity"`
+		Temperature float64 `json:"temperature"`
+	}
+
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -76,21 +82,12 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 }
 
 func (p *HomeProcessor) Process(msgIn *model.Message) *model.Message {
-	//r := regexp.MustCompile("\\Akeyword (.*)\\z")
-	//matchedStrings := r.FindStringSubmatch(msgIn.Body)
-	//text := matchedStrings[1]
-	//
-	//url := fmt.Sprintf(keywordApiUrlFormat, env.KeywordApiAppId, text)
-	//
-	//json := map[string]int{}
-	//get(url, &json)
-	//
-	//keywords := []string{}
-	//for keyword := range map[string]int(json) {
-	//	keywords = append(keywords, keyword)
-	//}
 
+	json := HomeJson{}
+	get("http://192.168.100.150:5000", &json)
+
+	msg := fmt.Sprintf("湿度: %f%%, 温度: %f°",json.Humidity, json.Temperature)
 	return &model.Message{
-		Body: "home：" + "res",
+		Body: "home：" + msg,
 	}
 }
