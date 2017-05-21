@@ -86,7 +86,8 @@ func (p *HomeProcessor) Process(msgIn *model.Message) *model.Message {
 	json := HomeJson{}
 	get("http://192.168.100.150:5000", &json)
 
-	msg := fmt.Sprintf("湿度: %f%%, 温度: %f°",json.Humidity, json.Temperature)
+	msg := "快適です"
+	msg = fmt.Sprintf("湿度: %f%%, 温度: %f°   %s",json.Humidity, json.Temperature, msg)
 	return &model.Message{
 		Body: "home：" + msg,
 	}
