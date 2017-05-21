@@ -57,31 +57,51 @@ func loadDic() {
 
 func main() {
 	loadDic()
+
 	words := []*Word{
 		&Word{
-			Surface:  "ここ",
-			Readging: "ここ",
-			Pos:      "名詞",
-		},
-		&Word{
-			Surface:  "の",
-			Readging: "の",
-			Pos:      "助詞",
-		},
-		&Word{
-			Surface:  "ラーメン",
-			Readging: "らーめん",
+			Surface:  "go",
+			Readging: "せかい",
 			Pos:      "名詞",
 		},
 		&Word{
 			Surface:  "は",
-			Readging: "は",
-			Pos:      "助詞",
+			Readging: "",
+			Pos:      "",
 		},
 		&Word{
-			Surface:  "絶好",
-			Readging: "ぜっこう",
-			Pos:      "形容詞",
+			Surface:  "楽しい",
+			Readging: "",
+			Pos:      "",
+		},
+		&Word{
+			Surface:  "そして",
+			Readging: "",
+			Pos:      "",
+		},
+		&Word{
+			Surface:  "幸せ",
+			Readging: "",
+			Pos:      "",
+		},
+	}
+	fmt.Printf("pn = %f\n", calcPn(words))
+
+	words = []*Word{
+		&Word{
+			Surface:  "javascript",
+			Readging: "",
+			Pos:      "",
+		},
+		&Word{
+			Surface:  "は",
+			Readging: "",
+			Pos:      "",
+		},
+		&Word{
+			Surface:  "悲しい",
+			Readging: "",
+			Pos:      "",
 		},
 	}
 	fmt.Printf("pn = %f\n", calcPn(words))
