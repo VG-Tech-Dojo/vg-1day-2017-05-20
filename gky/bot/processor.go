@@ -27,11 +27,14 @@ type (
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
+
+  UranaiProcessor struct{}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
 func (p *HelloWorldProcessor) Process(msgIn *model.Message) *model.Message {
 	return &model.Message{
+    SenderName: "bot",
 		Body: msgIn.Body + ", world!",
 	}
 }
@@ -72,3 +75,18 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 		Body: "キーワード：" + strings.Join(keywords, ", "),
 	}
 }
+
+func (p *UranaiProcessor) Process(msgIn *model.Message) *model.Message {
+  gachas := []string{
+    "SSレア",
+    "Sレア",
+    "レア",
+    "ノーマル",
+  }
+  result := gachas[randIntn(len(gachas))]
+  return &model.Message{
+    SenderName: "bot",
+    Body: result,
+  }
+}
+

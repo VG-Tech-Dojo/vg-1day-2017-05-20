@@ -96,6 +96,22 @@ func NewKeywordBot(out chan *model.Message) *Bot {
 	}
 }
 
+func NewGachaBot(out chan *model.Message) *Bot {
+  in := make(chan *model.Message)
+
+  checker := NewRegexpChecker("\\Agacha\\z")
+
+  processor := &UranaiProcessor{}
+
+  return &Bot{
+    name :     "gatchabot",
+    in:        in,
+    out:       out,
+    checker:   checker,
+    processor: processor,
+  }
+}
+
 func (b *Bot) respond(m *model.Message) {
 	message := b.processor.Process(m)
 	b.out <- message
