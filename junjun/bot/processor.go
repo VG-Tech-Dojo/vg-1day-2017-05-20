@@ -27,6 +27,8 @@ type (
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
+
+	UranaiProcessor struct{}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -70,5 +72,18 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
+	}
+}
+
+func (p *UranaiProcessor) Process(msgIn *model.Message) *model.Message {
+	fortunes := []string{
+		"SSレア",
+		"Sレア",
+		"レア",
+		"ノーマル",
+	}
+	result := fortunes[randIntn(len(fortunes))]
+	return &model.Message{
+		Body: result,
 	}
 }
