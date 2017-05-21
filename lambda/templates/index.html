@@ -17,6 +17,7 @@
         <message
           :id="message.id"
           :body="message.body"
+          :sender-name="message.senderName"
           :remove-message="removeMessage"
           :update-message="updateMessage"
         ></message>
@@ -25,6 +26,7 @@
     <div class="row">
       <!-- 1-2. ユーザー名を追加しよう -->
       <textarea class="u-full-width" v-model="newMessage.body" placeholder="メッセージ"></textarea>
+      <textarea class="u-full-width" placeholder="ユーザーネーム"></textarea>
       <button class="button-primary" v-on:click="sendMessage">Send</button>
     </div>
   </div>
