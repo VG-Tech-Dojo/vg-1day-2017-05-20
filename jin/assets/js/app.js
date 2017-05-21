@@ -110,6 +110,7 @@
         this.newMessage = new Message();
       }
 	  // 1-3. メッセージを編集しよう
+
       // ...
     }
   });
