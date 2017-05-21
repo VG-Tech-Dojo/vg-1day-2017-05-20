@@ -77,7 +77,7 @@ curl_message_create:
 	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)"}'
 
 curl_message_create_with_name:
-	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)", "senderName": "$(senderName)"}'
+	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)", "sender-name": "$(sender-name)"}'
 
 curl_message_put:
 	curl -i -X PUT $(host)/api/messages/$(id) -d '{"body": "$(body)"}'
