@@ -7,6 +7,7 @@ import 	(
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/takumi-n/httputil"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/takumi-n/model"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 // Message is controller for requests to messages
@@ -93,6 +94,31 @@ func (m *Message) Create(c *gin.Context) {
 func (m *Message) UpdateByID(c *gin.Context) {
 	// 1-3. メッセージを編集しよう
 	// ...
+	var msg model.Message
+	if err := c.BindJSON(&msg); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	id, err1 := strconv.ParseInt(c.Param("id"), 10, 64)
+
+	if err1 != nil {
+		resp := httputil.NewErrorResponse(err1)
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	msg.ID = id
+
+	_, err2 := msg.Update(m.DB)
+
+	if err2 != nil {
+		resp := httputil.NewErrorResponse(err2)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
 	c.JSON(http.StatusCreated, gin.H{})
 }
 
