@@ -1,113 +1,80 @@
-(function() {
-  'use strict';
-  const Message = function() {
-    this.body = '';
-  };
+// constants
+var ENTER_KEY_CODE = 13;
+var kuji_map = {
+  "大吉": "/assets/images/大吉.png",
+  "吉": "/assets/images/吉.png",
+  "中吉": "/assets/images/中吉.png",
+  "小吉": "/assets/images/小吉.png",
+  "末吉": "/assets/images/末吉.png",
+  "凶": "/assets/images/凶.png",
+}
 
-  Vue.component('message', {
-    // 1-1. ユーザー名を表示しよう
-    props: ['id', 'body', 'removeMessage', 'updateMessage'],
-    data() {
-      return {
-        editing: false,
-        editedBody: null,
-        displayedBody: this.body,
-      }
-    },
-    // 1-1. ユーザー名を表示しよう
-    template: `
-    <div class="message">
-      <div v-if="editing">
-        <div class="row">
-          <textarea v-model="editedBody" class="u-full-width"></textarea>
-          <button v-on:click="doneEdit">Save</button>
-          <button v-on:click="cancelEdit">Cancel</button>
-        </div>
-      </div>
-      <div class="message-body" v-else>
-        <span>{{ displayedBody }}</span>
-        <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
-        <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
-      </div>
-    </div>
-  `,
-    methods: {
-      remove() {
-        this.removeMessage(this.id)
-          .then(() => {
-            console.log('Deleting message')
-          })
-      },
-      edit() {
-        this.editing = true
-        this.editedBody = this.displayedBody
-      },
-      cancelEdit() {
-        this.editing = false
-        this.editedBody = null
-      },
-      doneEdit() {
-        this.updateMessage({id: this.id, body: this.editedBody})
-          .then(data => {
-            console.log('Updating message')
-            this.cancelEdit()
-          })
-      }
-    }
-  });
+// event set
+$(".box .user-input").keydown(function(e){
+  if(e.keyCode === ENTER_KEY_CODE){
+    var keyword = $(".user-input").val()
+    $(".user-input").val("")
+    requestOmikuji(keyword)
+  }
+})
 
-  const app = new Vue({
-    el: '#app',
-    data: {
-      messages: [],
-      newMessage: new Message()
-    },
-    created() {
-      this.getMessages();
-    },
-    methods: {
-      getMessages() {
-        fetch('/api/messages').then(response => response.json()).then(data => {
-          this.messages = data.result;
-        });
-      },
-      sendMessage() {
-        const message = this.newMessage;
-        fetch('/api/messages', {
-          method: 'POST',
-          body: JSON.stringify(message)
-        })
-          .then(response => response.json())
-          .then(response => {
-            if (response.error) {
-              alert(response.error.message);
-              return;
-            }
-            this.messages.push(response.result);
-            this.clearMessage();
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      },
-      removeMessage(id) {
-        return fetch(`/api/messages/${id}`, {
-          method: 'DELETE'
-        })
-        .then(response => response.json())
-      },
-      updateMessage(message) {
-        return fetch(`/api/messages/${message.id}`, {
-          method: 'PUT',
-          body: JSON.stringify(message),
-        })
-        .then(response => response.json())
-      },
-      clearMessage() {
-        this.newMessage = new Message();
-      }
-	  // 1-3. メッセージを編集しよう
-      // ...
-    }
-  });
-})();
+// http
+function requestOmikuji(text){
+
+  console.log("omikuji "+text)
+
+  var json = {
+    body: "omikuji "+text,
+    SenderName: ""
+  }
+
+  $.ajax({
+    url: "/api/messages",
+    type: "POST",
+    data: JSON.stringify(json)
+  })
+  .done(function(data){
+    $.ajax({
+      url: "/api/messages",
+      type: "GET"
+    })
+    .done(function(data){
+      kujiRender(data.result[data.result.length -1].body)
+    })
+    .fail(function(err){
+      throw new Error(err)
+    })
+  })
+  .fail(function(err){
+    throw new Error(err)
+  })
+
+}
+
+function kujiRender(kuji_type){
+
+  var image_url = kuji_map[kuji_type]
+
+  $(".kuji img").attr("src",image_url)
+  changeView()
+
+  kuji_type == "凶" ? doBadAnimation() : doAnimation()
+
+}
+
+function doAnimation(){
+  TweenMax.to('.kuji', 1, { autoAlpha: 1, ease: Expo.easeInOut });
+  TweenMax.to('.kuji', 1, { rotation: 360 });
+  TweenMax.to(".cracker img", 0.5, { width: "100%" })
+  TweenMax.to(".cracker img", 3, { delay: 0.5 ,autoAlpha: 0 })
+}
+
+function doBadAnimation(){
+  TweenMax.to('.kuji', 1, { autoAlpha: 1, ease: Expo.easeInOut });
+}
+
+function changeView(){
+  $(".kuji").removeClass("_hidden")
+  $(".box").addClass("_hidden")
+  $(".reload").removeClass("_hidden")
+}
