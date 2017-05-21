@@ -96,6 +96,23 @@ func NewKeywordBot(out chan *model.Message) *Bot {
 	}
 }
 
+// NewTalkBot はメッセージ本文に対する雑談応答を返す新しいBotの構造体のポインタを返します
+func NewTalkBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Atalk .*")
+
+	processor := &TalkProcessor{}
+
+	return &Bot{
+		name:      "talkbot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
+
 func (b *Bot) respond(m *model.Message) {
 	message := b.processor.Process(m)
 	b.out <- message
