@@ -43,6 +43,7 @@ body,html{
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   opacity: 0;
+  z-index: 100;
 }
 .kuji img{
   display: block;
@@ -60,4 +61,22 @@ body,html{
   color: white;
   font-weight: bold;
   border-radius: 5px;
+}
+
+.cracker img{
+  display: block;
+  width: 0%;
+}
+.cracker-left{
+  position: fixed;
+  bottom: 0;
+  left: -10px;
+  z-index: 10;
+}
+.cracker-right{
+  position: fixed;
+  bottom: 0;
+  right: -10px;
+  transform: scale(-1, 1);
+  z-index: 10;
 }
