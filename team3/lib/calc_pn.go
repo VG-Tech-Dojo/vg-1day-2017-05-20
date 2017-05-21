@@ -1,16 +1,15 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"json"
-	"os"
 )
 
 // []struct -> float64
 
 type Dic struct {
-	Words []WordPn
+	Words []WordPn `json:"dictionary"`
 }
 
 type WordPn struct {
@@ -53,9 +52,37 @@ func loadDic() {
 
 	var jsontype Dic
 	json.Unmarshal(file, &jsontype)
-	// fmt.Printf("Results: %v\n", jsontype)
+	dic = jsontype.Words
 }
 
 func main() {
 	loadDic()
+	words := []*Word{
+		&Word{
+			Surface:  "ここ",
+			Readging: "ここ",
+			Pos:      "名詞",
+		},
+		&Word{
+			Surface:  "の",
+			Readging: "の",
+			Pos:      "助詞",
+		},
+		&Word{
+			Surface:  "ラーメン",
+			Readging: "らーめん",
+			Pos:      "名詞",
+		},
+		&Word{
+			Surface:  "は",
+			Readging: "は",
+			Pos:      "助詞",
+		},
+		&Word{
+			Surface:  "絶好",
+			Readging: "ぜっこう",
+			Pos:      "形容詞",
+		},
+	}
+	fmt.Printf("pn = %f\n", calcPn(words))
 }
