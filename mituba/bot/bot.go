@@ -79,6 +79,22 @@ func NewOmikujiBot(out chan *model.Message) *Bot {
 	}
 }
 
+func NewGatyaBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Agatya\\z")
+
+	processor := &GatyaProcessor{}
+
+	return &Bot{
+		name:      "gatyabot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
+
 // NewKeywordBot はメッセージ本文からキーワードを抽出して返す新しいBotの構造体のポインタを返します
 func NewKeywordBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
