@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/team1/model"
+	"golang.org/x/tools/go/gcimporter15/testdata"
 )
 
 type (
@@ -89,6 +90,23 @@ func NewKeywordBot(out chan *model.Message) *Bot {
 
 	return &Bot{
 		name:      "keywordbot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
+
+// NewYahooAuctionBot
+func NewYahooAuctionBot(out chan *model.Message) *Bot{
+	in := make(chan *model.Message)
+
+	//follow ~ で商品を追跡
+	checker := NewRegexpChecker("\\Afollow .*")
+	processor := &YahooAuctionProcessor{}
+
+	return &Bot{
+		name:      "yahooAuctionBot",
 		in:        in,
 		out:       out,
 		checker:   checker,

@@ -83,6 +83,9 @@ func (s *Server) Init(dbconf, env string) error {
 	keywordBot := bot.NewKeywordBot(s.poster.In)
 	s.bots = append(s.bots, keywordBot)
 
+	yahooAuctionBot := bot.NewYahooAuctionBot(s.poster.In)
+	s.bots = append(s.bots, yahooAuctionBot)
+
 	return nil
 }
 
