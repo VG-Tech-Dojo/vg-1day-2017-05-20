@@ -73,8 +73,14 @@ func (m *Message) Create(c *gin.Context) {
 
 	// 1-2. ユーザー名を追加しよう
 	// ユーザー名が空でも投稿できるようにするかどうかは自分で考えてみよう
+	if msg.SenderName == "" {
+		resp := httputil.NewErrorResponse(errors.New("sender name is missing"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
 
 	inserted, err := msg.Insert(m.DB)
+	
 	if err != nil {
 		resp := httputil.NewErrorResponse(err)
 		c.JSON(http.StatusInternalServerError, resp)
