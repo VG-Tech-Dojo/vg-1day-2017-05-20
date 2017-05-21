@@ -27,6 +27,10 @@ type (
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
+
+	// "SSレア", "Sレア", "レア", "ノーマル"のいずれかをランダムで返すprocessorの構造体です
+	GachaProcessor struct{}
+
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -70,5 +74,19 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
+	}
+}
+
+// Process は"SSレア", "Sレア", "レア", "ノーマル"のいずれかをランダムで返します
+func (p *GachaProcessor) Process(msgIn *model.Message) *model.Message {
+	ranks := []string{
+		"SSレア",
+		"Sレア",
+		"レア",
+		"ノーマル",
+	}
+	result := ranks[randIntn(len(ranks))]
+	return &model.Message{
+		Body: result,
 	}
 }
