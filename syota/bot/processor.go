@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/syota/env"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/syota/model"
+	"net/url"
 )
 
 const (
@@ -29,6 +30,19 @@ type (
 	KeywordProcessor struct{}
 
 	GachaProcessor struct{}
+
+	TalkProcessor struct{}
+
+	talkApiResponse struct {
+		Status int `json:"status"`
+		Message string `json:"message"`
+		Results []talkApiResult `json:"results"`
+	}
+
+	talkApiResult struct {
+		Perplexity float64 `json:"perplexity"`
+		Reply      string  `json:"reply"`
+	}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -85,5 +99,23 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
+	}
+}
+
+func (p *TalkProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Atalk (.*)\\z")
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	text := matchedStrings[1]
+	params := url.Values{
+		"apikey": {env.TalkApiToken},
+		"query":  {text},
+	}
+
+	json := talkApiResponse{}
+
+	post(env.TalkApiUrl, params, &json)
+
+	return &model.Message{
+		Body: "応答: " + json.Results[0].Reply,
 	}
 }
