@@ -9,13 +9,14 @@ type Message struct {
 	ID   int64  `json:"id"`
 	Body string `json:"body"`
 	// 1-1. ユーザー名を表示しよう
+	Name string `json:"name"`
 }
 
 // MessagesAll は全てのメッセージを返します
 func MessagesAll(db *sql.DB) ([]*Message, error) {
 
 	// 1-1. ユーザー名を表示しよう
-	rows, err := db.Query(`select id, body from message`)
+	rows, err := db.Query(`select id, body, sender_name as name from message`)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +26,7 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	for rows.Next() {
 		m := &Message{}
 		// 1-1. ユーザー名を表示しよう
-		if err := rows.Scan(&m.ID, &m.Body); err != nil {
+		if err := rows.Scan(&m.ID, &m.Body, &m.Name); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)
@@ -42,7 +43,7 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 	m := &Message{}
 
 	// 1-1. ユーザー名を表示しよう
-	if err := db.QueryRow(`select id, body from message where id = ?`, id).Scan(&m.ID, &m.Body); err != nil {
+	if err := db.QueryRow(`select id, body, sender_name from message where id = ?`, id).Scan(&m.ID, &m.Body, &m.Name); err != nil {
 		return nil, err
 	}
 
