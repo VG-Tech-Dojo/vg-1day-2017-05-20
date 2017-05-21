@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/team1/model"
-	"golang.org/x/tools/go/gcimporter15/testdata"
 )
 
 type (
@@ -103,7 +102,8 @@ func NewYahooAuctionBot(out chan *model.Message) *Bot{
 
 	//follow ~ で商品を追跡
 	checker := NewRegexpChecker("\\Afollow .*")
-	processor := &YahooAuctionProcessor{}
+	//processor := &YahooAuctionProcessor{}
+	processor := &KeywordProcessor{}
 
 	return &Bot{
 		name:      "yahooAuctionBot",
