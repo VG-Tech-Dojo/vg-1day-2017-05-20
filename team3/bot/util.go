@@ -3,6 +3,7 @@ package bot
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/xml"
 	"io/ioutil"
 	"math/rand"
 	"net/http"
@@ -22,11 +23,28 @@ func get(url string, out interface{}) error {
 	if err != nil {
 		return err
 	}
-
 	err = json.Unmarshal(respBody, out)
 	if err != nil {
 		return err
 	}
+
+	return nil
+}
+func xmlGet(url string, out interface{}) error {
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	// err = xml.Unmarshal(respBody, out)
+	// if err != nil {
+	// 	return err
+	// }
 
 	return nil
 }
