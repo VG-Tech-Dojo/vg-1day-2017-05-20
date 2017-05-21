@@ -76,7 +76,6 @@
       },
       sendMessage() {
         const message = this.newMessage;
-        console.log(message)
         fetch('/api/messages', {
           method: 'POST',
           body: JSON.stringify(message)
@@ -106,6 +105,11 @@
           body: JSON.stringify(message),
         })
         .then(response => response.json())
+        .then(response => {
+            Vue.nextTick(() => {
+              this.messages = response.result
+            })
+        })
       },
       clearMessage() {
         this.newMessage = new Message();
@@ -115,3 +119,4 @@
     }
   });
 })();
+
