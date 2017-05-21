@@ -83,9 +83,34 @@ func (p *YahooAuctionProcessor) Process(msgIn *model.Message) *model.Message {
 
 	url := fmt.Sprintf(yahooAuctionApiUrlFormat, env.YahooAuctionApiAppId, text)
 
-	type ResultSet struct {
+	type (
+		Item struct {
+			AuctionID string `json:"AuctionID"`
+			Title string `json:"title"`
+			Seller map[string]string `json:"Seller"`
+			ItemUrl string `json:"ItemUrl"`
+			AuctionItemUrl string `json:"AuctionItemUrl"`
+			Image string `json:"Image"`
+			OriginalImageNum string `json:"OriginalImageNum"`
+			CurrentPrice string `json:"CurrentPrice"`
+			Bids string `json:"Bids"`
+			EndTime string `json:"EndTime"`
+			IsReserved string `json:"IsReserved"`
+			CharityOption map[string] string `json:"CharityOption"`
+			Option map[string]string `json:"Option"`
+			IsAdult string `json:"IsAdult"`
+		}
 
-	}
+		Result struct {
+			UnitsWord []string `json:"UnitsWord"`
+			Item []Item `json:"Item"`
+		}
+
+		ResultSet struct {
+			Attributes map[string]string `json:"@attributes"`
+			Result Result `json:"Result"`
+		}
+	)
 
 	json := ResultSet{}
 	get(url, &json)
