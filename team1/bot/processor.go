@@ -110,12 +110,16 @@ func (p *YahooAuctionProcessor) Process(msgIn *model.Message) *model.Message {
 			Attributes map[string]string `json:"@attributes"`
 			Result Result `json:"Result"`
 		}
+
+		Response struct {
+			ResultSet ResultSet `json:"ResultSet"`
+		}
 	)
 
-	json := ResultSet{}
+	json := Response{}
 	get(url, &json)
 
 	return &model.Message{
-		Body: "[" + json.Result.Item[0].Title + "] " + json.Result.Item[0].AuctionItemUrl,
+		Body: "[" + json.ResultSet.Result.Item[0].Title + "] " + json.ResultSet.Result.Item[0].AuctionItemUrl,
 	}
 }
