@@ -27,6 +27,8 @@ type (
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
+
+	GachaProcessor struct {}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -45,6 +47,19 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
 		"小吉",
 		"末吉",
 		"凶",
+	}
+	result := fortunes[randIntn(len(fortunes))]
+	return &model.Message{
+		Body: result,
+	}
+}
+
+func (p *GachaProcessor) Process(msgIn *model.Message) *model.Message {
+	fortunes := []string{
+		"SSレア",
+		"Sレア",
+		"レア",
+		"ノーマル",
 	}
 	result := fortunes[randIntn(len(fortunes))]
 	return &model.Message{
