@@ -21,8 +21,6 @@ $(".box .user-input").keydown(function(e){
 // http
 function requestOmikuji(text){
 
-  console.log("omikuji "+text)
-
   var json = {
     body: "omikuji "+text,
     SenderName: ""
