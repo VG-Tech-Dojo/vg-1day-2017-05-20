@@ -48,10 +48,16 @@
         this.editedBody = null
       },
       doneEdit() {
-        this.updateMessage({id: this.id, body: this.editedBody})
-          .then(data => {
-            console.log('Updating message')
+        this.updateMessage({id: this.id, body: this.editedBody, senderName: this.senderName})
+          .then(response => {
+            if (response.error) {
+              alert(response.error.message)
+              return
+            }
+            this.displayedBody = this.editedBody
             this.cancelEdit()
+          }).catch(error => {
+            console.log(error)
           })
       }
     }
