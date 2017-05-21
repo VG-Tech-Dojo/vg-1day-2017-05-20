@@ -7,10 +7,23 @@ import (
 	"fmt"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/gky/env"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/gky/model"
+  "net/url"
 )
 
 const (
 	keywordApiUrlFormat = "https://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid=%s&sentence=%s&output=json"
+  chatBotApiUrl = "https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk"
+)
+
+type (
+  TalkApiResponse struct {
+    Status int `json:"status"`
+    Message string `json:"message"`
+    Results []struct {
+      Perplexity float64 `json:"perplexity"`
+      Reply string `json:"reply"`
+    } `json:"results"`
+  }
 )
 
 type (
@@ -88,5 +101,24 @@ func (p *UranaiProcessor) Process(msgIn *model.Message) *model.Message {
     SenderName: "bot",
     Body: result,
   }
+}
+
+func (p *ChatBotProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Atalk (.*)\\z")
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	text := matchedStrings[1]
+
+  params := url.Values{
+    "apikey": {env.ChatBotApiAppKey},
+    "query": {text},
+  }
+
+	json := TalkApiResponse{}
+	post(chatBotApiUrl, params, &json)
+
+	return &model.Message{
+    SenderName: "bot",
+		Body: json.Results[0].Reply,
+	}
 }
 
