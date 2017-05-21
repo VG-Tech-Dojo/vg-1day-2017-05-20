@@ -7,7 +7,7 @@
 
   Vue.component('message', {
     // 1-1. ユーザー名を表示しよう
-    props: ['id', 'body', 'senderName', 'removeMessage', 'updateMessage'],
+    props: ['id', 'body', 'senderName', 'removeMessage', 'updateMessage', 'spliceMessage'],
     data() {
       return {
         editing: false,
@@ -35,8 +35,12 @@
     methods: {
       remove() {
         this.removeMessage(this.id)
-          .then(() => {
-            console.log('Deleting message')
+          .then(response => {
+            if (response.error) {
+              alert(response.error.message)
+              return
+            }
+            this.spliceMessage(this.id)
           })
       },
       edit() {
@@ -112,6 +116,11 @@
       },
       clearMessage() {
         this.newMessage = new Message();
+      },
+      spliceMessage(id) {
+        this.messages = this.messages.filter(m => {
+          return m.id !== id
+        })
       }
 	  // 1-3. メッセージを編集しよう
       // ...
