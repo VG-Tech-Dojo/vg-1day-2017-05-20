@@ -53,14 +53,15 @@ func (p *OmikujiProcessor) Process(msgIn *model.Message) *model.Message {
   seed := 0
   for len(msgIn.Body) > 0 {
     r, size := utf8.DecodeRuneInString(msgIn.Body)
-    rc := fmt.Sprintf("%d", r)
-    fmt.Println(rc)
-    rci, _ := strconv.Atoi(rc)
-    seed = seed + rci
+    s := fmt.Sprintf("%d", r)
+    fmt.Println(s)  // 一文字ずつ値を出力
+    i, _ := strconv.Atoi(s)
+    seed = seed + i
     msgIn.Body = msgIn.Body[size:]
   }
 
   fmt.Println(seed)
+  seed = seed - 792  // シード値から "omikuji " の部分の値(792)を取り除く
   seed = seed % len(fortunes)
 
 	//result := fortunes[randIntn(len(fortunes))]
