@@ -11,6 +11,7 @@ import (
 
 const (
 	keywordApiUrlFormat = "https://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid=%s&sentence=%s&output=json"
+	yahooAuctionApiUrlFormat = "https://auctions.yahooapis.jp/AuctionWebService/V2/json/search?appid=%s&query=%s"
 )
 
 type (
@@ -27,6 +28,8 @@ type (
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
+
+	YahooAuctionProcessor struct{}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -70,5 +73,24 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
+	}
+}
+
+func (p *YahooAuctionProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Afollow (.*)\\z")
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	text := matchedStrings[1]
+
+	url := fmt.Sprintf(yahooAuctionApiUrlFormat, env.YahooAuctionApiAppId, text)
+
+	type ResultSet struct {
+
+	}
+
+	json := ResultSet{}
+	get(url, &json)
+
+	return &model.Message{
+		Body: "[" + json.Result.Item[0].Title + "] " + json.Result.Item[0].AuctionItemUrl,
 	}
 }
