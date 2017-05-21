@@ -2,6 +2,7 @@
   'use strict';
   const Message = function() {
     this.body = '';
+    this.SenderName = "";
   };
 
   Vue.component('message', {
@@ -27,7 +28,7 @@
       </div>
       <div class="message-body" v-else>
         <span>{{ displayedBody }}</span>
-        <span style="color: red;">{{ displayedName }}</span>
+        <span style="color: red">{{ displayedName }}</span>
         <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
         <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
       </div>
@@ -75,6 +76,7 @@
       },
       sendMessage() {
         const message = this.newMessage;
+        console.log(message)
         fetch('/api/messages', {
           method: 'POST',
           body: JSON.stringify(message)

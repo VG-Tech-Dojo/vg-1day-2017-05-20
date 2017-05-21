@@ -26,6 +26,7 @@
     <div class="row">
       <!-- 1-2. ユーザー名を追加しよう -->
       <textarea class="u-full-width" v-model="newMessage.body" placeholder="メッセージ"></textarea>
+      <input type="text" class="u-full-width" v-model="newMessage.SenderName" placeholder="user name">
       <button class="button-primary" v-on:click="sendMessage">Send</button>
     </div>
   </div>
