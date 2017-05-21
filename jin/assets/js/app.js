@@ -2,16 +2,18 @@
   'use strict';
   const Message = function() {
     this.body = '';
+    this.sender_name = '';
   };
 
   Vue.component('message', {
     // 1-1. ユーザー名を表示しよう
-    props: ['id', 'body', 'removeMessage', 'updateMessage'],
+    props: ['id', 'body', 'senderName', 'removeMessage', 'updateMessage'],
     data() {
       return {
         editing: false,
         editedBody: null,
         displayedBody: this.body,
+        displayedSendar_name: this.senderName,
       }
     },
     // 1-1. ユーザー名を表示しよう
@@ -26,6 +28,7 @@
       </div>
       <div class="message-body" v-else>
         <span>{{ displayedBody }}</span>
+        <span>{{ displayedSendar_name }}</span>
         <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
         <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
       </div>
