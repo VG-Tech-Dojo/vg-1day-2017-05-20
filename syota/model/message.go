@@ -87,4 +87,16 @@ func (m *Message) Put(db *sql.DB) (*Message, error) {
 // ...
 
 // 1-4. メッセージを削除しよう
+func (m *Message) Delete(db *sql.DB) (*Message, error) {
+	_, err := db.Exec(`delete from message where id=(?)`, m.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Message{
+		ID: m.ID,
+		Body: m.Body,
+		Sender_name: m.Sender_name,
+	}, nil
+}
 // ...
