@@ -74,13 +74,13 @@ curl_messages_get:
 	curl -i $(host)/api/messages/$(id)
 
 curl_message_create:
-	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)"}'
+	curl -i -X POST $(host)/api/messages -d '{"body": "$(body)","sender_name": "$(sender_name)"}'
 
 curl_message_put:
-	curl -i -X PUT $(host)/api/messages/$(id) -d '{"body": "$(body)"}'
+	curl -i -X PUT $(host)/api/messages/$(id) -d '{"body": "$(body)","sender_name": "$(sender_name)"}'
 
 curl_message_delete:
-	curl -i -X DELETE $(host)/api/messages/$(id) -d '{"body": "$(body)"}'
+	curl -i -X DELETE $(host)/api/messages/$(id)
 
 dev.db:
 	$(MAKE) db_init

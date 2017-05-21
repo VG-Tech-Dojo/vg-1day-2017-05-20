@@ -8,6 +8,7 @@ import (
 type Message struct {
 	ID   int64  `json:"id"`
 	Body string `json:"body"`
+	Sender_name string `json:"sender_name"`
 	// 1-1. ユーザー名を表示しよう
 }
 
@@ -15,7 +16,7 @@ type Message struct {
 func MessagesAll(db *sql.DB) ([]*Message, error) {
 
 	// 1-1. ユーザー名を表示しよう
-	rows, err := db.Query(`select id, body from message`)
+	rows, err := db.Query(`select id, body, sender_name from message`)
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +26,7 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	for rows.Next() {
 		m := &Message{}
 		// 1-1. ユーザー名を表示しよう
-		if err := rows.Scan(&m.ID, &m.Body); err != nil {
+		if err := rows.Scan(&m.ID, &m.Body, &m.Sender_name); err != nil {
 			return nil, err
 		}
 		ms = append(ms, m)
@@ -33,7 +34,6 @@ func MessagesAll(db *sql.DB) ([]*Message, error) {
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-
 	return ms, nil
 }
 
@@ -52,7 +52,7 @@ func MessageByID(db *sql.DB, id string) (*Message, error) {
 // Insert はmessageテーブルに新規データを1件追加します
 func (m *Message) Insert(db *sql.DB) (*Message, error) {
 	// 1-2. ユーザー名を追加しよう
-	res, err := db.Exec(`insert into message (body) values (?)`, m.Body)
+	res, err := db.Exec(`insert into message (body, sender_name) values (?, ?)`, m.Body, m.Sender_name)
 	if err != nil {
 		return nil, err
 	}
@@ -65,11 +65,35 @@ func (m *Message) Insert(db *sql.DB) (*Message, error) {
 		ID:   id,
 		Body: m.Body,
 		// 1-2. ユーザー名を追加しよう
+		Sender_name: m.Sender_name,
 	}, nil
 }
 
 // 1-3. メッセージを編集しよう
 // ...
-
+func (m *Message) Update(db *sql.DB, id string) (*Message, error) {
+	res, err := db.Exec(`UPDATE message SET body= ? , sender_name = ? WHERE id = ?`, m.Body, m.Sender_name,id)
+	if err != nil {
+		return nil, err
+	}
+	res_id, err := res.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	return &Message{
+		ID:   res_id,
+		Body: m.Body,
+		Sender_name: m.Sender_name,
+	}, nil
+}
 // 1-4. メッセージを削除しよう
 // ...
+func Delete(db *sql.DB, id string) ( error) {
+	// 1-1. ユーザー名を表示しよう
+	_, err := db.Exec(`DELETE  from message where id = ?`, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
