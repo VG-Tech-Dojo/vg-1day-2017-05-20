@@ -62,6 +62,22 @@ func NewHelloWorldBot(out chan *model.Message) *Bot {
 	}
 }
 
+func NewGachaBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Agacha\\z")
+
+	processor := &NewGachaProcessor{}
+
+	return &Bot{
+		name:		"gachabot",
+		in:		in,
+		out:		out,
+		checker:	checker,
+		processor:	processor,
+	}
+}
+
 // NewOmikujiBot は"大吉", "吉", "中吉", "小吉", "末吉", "凶"のいずれかをランダムで返す新しいBotの構造体のポインタを返します
 func NewOmikujiBot(out chan *model.Message) *Bot {
 	in := make(chan *model.Message)
