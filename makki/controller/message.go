@@ -8,6 +8,7 @@ import (
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/makki/httputil"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/makki/model"
 	"github.com/gin-gonic/gin"
+	"fmt"
 )
 
 // Message is controller for requests to messages
@@ -94,7 +95,36 @@ func (m *Message) Create(c *gin.Context) {
 func (m *Message) UpdateByID(c *gin.Context) {
 	// 1-3. メッセージを編集しよう
 	// ...
-	c.JSON(http.StatusCreated, gin.H{})
+	fmt.Println("!!!!!!!!!!!!!!!!!")
+	var msg model.Message
+	if err := c.BindJSON(&msg); err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	if msg.Body == "" {
+		resp := httputil.NewErrorResponse(errors.New("body is missing"))
+		c.JSON(http.StatusBadRequest, resp)
+		return
+	}
+
+	// 1-2. ユーザー名を追加しよう
+	// ユーザー名が空でも投稿できるようにするかどうかは自分で考えてみよう
+
+	update, err := msg.Update(m.DB, c.Param("id"))
+	if err != nil {
+		resp := httputil.NewErrorResponse(err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	// bot対応
+	m.Stream <- update
+
+	c.JSON(http.StatusCreated, gin.H{
+		"result": update,
+		"error":  nil,
+	})
 }
 
 // DeleteByID は...
