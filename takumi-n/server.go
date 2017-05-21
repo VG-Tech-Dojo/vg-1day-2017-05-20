@@ -47,6 +47,10 @@ func (s *Server) Init(dbconf, env string) error {
 	// routing
 	s.Engine.LoadHTMLGlob("./templates/*")
 
+	s.Engine.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", gin.H{})
+	})
+
 	s.Engine.GET("/takumi-n", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "takumi-n.html", gin.H{})
 	})

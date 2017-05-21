@@ -1,10 +1,9 @@
 package controller
 
-import (
+import 	(
 	"database/sql"
 	"errors"
 	"net/http"
-
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/takumi-n/httputil"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/takumi-n/model"
 	"github.com/gin-gonic/gin"
