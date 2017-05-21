@@ -11,6 +11,7 @@ import (
 
 const (
 	keywordApiUrlFormat = "https://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid=%s&sentence=%s&output=json"
+	talkApiUrlFormat = "https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk"
 )
 
 type (
@@ -28,7 +29,21 @@ type (
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
 	KeywordProcessor struct{}
 
-	// GachaProcessor "SSレア", "Sレア", "レア", "ノーマル"
+	// リクルートのトークAPIを使用するProcessorの構造体
+	TalkProcessor struct{}
+
+	talkApiResponse struct {
+		Status  int             `json:"status"`
+		Message string          `json:"message"`
+		Results []talkApiResult `json:"results"`
+	}
+
+	talkApiResult struct {
+		Perplexity float64 `json:"perplexity"`
+		Reply      string  `json:"reply"`
+	}
+
+// GachaProcessor "SSレア", "Sレア", "レア", "ノーマル"
 	GachaProcessor struct{}
 )
 
@@ -86,5 +101,26 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
+	}
+}
+
+// Process はメッセージ本文からキーワードを抽出します
+func (p *TalkProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Atalk (.*)\\z")
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	text := matchedStrings[1]
+
+	var params = map[string][]string{
+		"apikey": {env.TalkAppId},
+		"query": {text},
+	}
+
+	//post
+	json := talkApiResponse{}
+
+	post(talkApiUrlFormat, params, &json)
+
+	return &model.Message{
+		Body: json.Results[0].Reply,
 	}
 }
