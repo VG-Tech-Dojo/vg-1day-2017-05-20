@@ -16,7 +16,7 @@ type Message struct {
 func MessagesAll(db *sql.DB) ([]*Message, error) {
 
 	// 1-1. ユーザー名を表示しよう
-	rows, err := db.Query(`select id, body, sender_name as name from message`)
+	rows, err := db.Query(`select id, body, sender_name from message`)
 	if err != nil {
 		return nil, err
 	}
@@ -72,6 +72,16 @@ func (m *Message) Insert(db *sql.DB) (*Message, error) {
 
 // 1-3. メッセージを編集しよう
 // ...
+// func Update(db *sql.DB) (*Message, error) {
+// 	// 1-3. メッセージ編集
+// 	res, err := db.Exec(`update message set (body, sender_name) values (?,?)`, m.Body, m.Name)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+//
+// 	// update message set sender_name = (?);
+//
+// }
 
 // 1-4. メッセージを削除しよう
 // ...
