@@ -101,3 +101,19 @@ func (b *Bot) respond(m *model.Message) {
 	b.out <- message
 	fmt.Printf("%s send: %v\n", b.name, message)
 }
+
+func NewHomeBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Ahome\\z")
+
+	processor := &HomeProcessor{}
+
+	return &Bot{
+		name:      "omikujibot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
