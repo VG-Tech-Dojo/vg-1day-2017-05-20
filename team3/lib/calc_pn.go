@@ -61,17 +61,17 @@ func main() {
 	words := []*Word{
 		&Word{
 			Surface:  "go",
-			Readging: "せかい",
+			Readging: "ごー",
 			Pos:      "名詞",
 		},
 		&Word{
 			Surface:  "は",
-			Readging: "",
+			Readging: "は",
 			Pos:      "",
 		},
 		&Word{
 			Surface:  "楽しい",
-			Readging: "",
+			Readging: "たのしい",
 			Pos:      "",
 		},
 		&Word{
