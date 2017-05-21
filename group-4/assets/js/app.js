@@ -1,12 +1,12 @@
 // constants
 var ENTER_KEY_CODE = 13;
 var kuji_map = {
-  "大吉": "/assets/images/kuji-daikichi.png",
-  "吉": "/assets/images/kuji-daikichi.png",
-  "中吉": "/assets/images/kuji-daikichi.png",
-  "小吉": "/assets/images/kuji-daikichi.png",
-  "末吉": "/assets/images/kuji-daikichi.png",
-  "凶": "/assets/images/kuji-daikichi.png",
+  "大吉": "/assets/images/大吉.png",
+  "吉": "/assets/images/吉.png",
+  "中吉": "/assets/images/中吉.png",
+  "小吉": "/assets/images/小吉.png",
+  "末吉": "/assets/images/末吉.png",
+  "凶": "/assets/images/凶.png",
 }
 
 // event set
@@ -20,22 +20,35 @@ $(".box .user-input").keydown(function(e){
 
 // http
 function requestOmikuji(text){
-  // $.ajax({
-  //   url: "",
-  //   type: "GET",
-  //   data: {
-  //     text: text
-  //   }
-  // })
-  // .done(function(data){
-  //   // console.log(data)
-  //   kujiRender()
-  // })
-  // .fail(function(err){
-  //   throw new Error(err)
-  // })
 
-  kujiRender(text)
+  console.log("omikuji "+text)
+
+  var json = {
+    body: "omikuji "+text,
+    SenderName: ""
+  }
+
+  $.ajax({
+    url: "/api/messages",
+    type: "POST",
+    data: JSON.stringify(json)
+  })
+  .done(function(data){
+    $.ajax({
+      url: "/api/messages",
+      type: "GET"
+    })
+    .done(function(data){
+      kujiRender(data.result[data.result.length -1].body)
+    })
+    .fail(function(err){
+      throw new Error(err)
+    })
+  })
+  .fail(function(err){
+    throw new Error(err)
+  })
+
 }
 
 function kujiRender(kuji_type){
