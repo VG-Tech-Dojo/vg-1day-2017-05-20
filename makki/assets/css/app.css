@@ -1,0 +1,14 @@
+.message {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.message-body .action-button {
+  margin: 0px 3px;
+  color: #c1c1c1;
+  cursor: pointer;
+}
+
+.message-body .action-button:hover {
+  color: #444444;
+}
