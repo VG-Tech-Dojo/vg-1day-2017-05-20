@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"encoding/xml"
 	"regexp"
 	"strings"
 
@@ -10,7 +11,7 @@ import (
 )
 
 const (
-	keywordApiUrlFormat = "https://jlp.yahooapis.jp/KeyphraseService/V1/extract?appid=%s&sentence=%s&output=json"
+	keywordApiUrlFormat = "http://jlp.yahooapis.jp/MAService/V1/parse?appid=dj0zaiZpPVJ6YzZMeTVTbkJLZSZzPWNvbnN1bWVyc2VjcmV0Jng9MmE-&sentence="
 )
 
 type (
@@ -26,7 +27,14 @@ type (
 	OmikujiProcessor struct{}
 
 	// メッセージ本文からキーワードを抽出するprocessorの構造体です
-	KeywordProcessor struct{}
+	KeywordProcessor     struct{}
+	WordEmotionProcessor struct{}
+
+	XML struct {
+		surface []string `xml:"surface"`
+		reading []string `xml:"reading"`
+		pos     []string `xml:"pos"`
+	}
 )
 
 // Process は"hello, world!"というbodyがセットされたメッセージのポインタを返します
@@ -71,4 +79,36 @@ func (p *KeywordProcessor) Process(msgIn *model.Message) *model.Message {
 	return &model.Message{
 		Body: "キーワード：" + strings.Join(keywords, ", "),
 	}
+}
+
+// Process はメッセージ本文からキーワードを抽出します
+func (p *WordEmotionProcessor) Process(msgIn *model.Message) *model.Message {
+	r := regexp.MustCompile("\\Atalk (.*)\\z")
+	matchedStrings := r.FindStringSubmatch(msgIn.Body)
+	text := matchedStrings[1]
+
+	url := keywordApiUrlFormat + text
+
+	result := XML{}
+	xmlGet(url, &result)
+	data := new(XML)
+	if err := xml.Unmarshal(result, data); err != nil {
+		fmt.Println("XML Unmarshal error", err)
+		// return
+	}
+	// var result_text string
+	//
+	// for _, xml := range result {
+	// 	fmt.Println(xml.surface)
+	// 	result_text = xml.surface
+	// }
+
+	// keywords := []string{}
+	// for keyword := range map[string]int(json) {
+	// 	keywords = append(keywords, keyword)
+	// }
+	return &model.Message{
+		Body: "キーワード： " + data.surface[0],
+	}
+
 }

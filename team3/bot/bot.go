@@ -95,6 +95,21 @@ func NewKeywordBot(out chan *model.Message) *Bot {
 		processor: processor,
 	}
 }
+func NewWordEmotionBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Atalk .*")
+
+	processor := &WordEmotionProcessor{}
+
+	return &Bot{
+		name:      "wordemotionbot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
 
 func (b *Bot) respond(m *model.Message) {
 	message := b.processor.Process(m)
