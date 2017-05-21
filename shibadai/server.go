@@ -55,9 +55,9 @@ func (s *Server) Init(dbconf, env string) error {
 	// tutorial. 自己紹介を追加する
 	// ...
 	s.Engine.GET("/shibadai", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "shibadai.html", gin.H{})
+		c.HTML(http.StatusOK, "index.html", gin.H{})
 	})
-	
+
 	s.Engine.Static("/assets", "./assets")
 	// api
 	api := s.Engine.Group("/api")
