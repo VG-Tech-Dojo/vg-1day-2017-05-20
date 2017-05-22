@@ -1,11 +1,12 @@
-'use strict';
-
 export default class Utils{
 
   constructor() {
-    this.ENTER_KEY_CODE = 13;
+    this.getKujiJson()
+  }
+
+  getKujiJson(){
     $.getJSON("/assets/omikuji.json", (data) => {
-      console.log(data)
+      this.omikujiMap = data
     })
   }
 
@@ -49,10 +50,10 @@ export default class Utils{
 
   kujiRender(kuji_type){
 
-    let image_url = "/assets/images/凶.png"
+    let image_url = this.omikujiMap[kuji_type]
 
     $(".kuji img").attr("src",image_url)
-    changeView()
+    this.changeView()
 
     kuji_type == "凶" ? this.doBadAnimation() : this.doAnimation()
 
