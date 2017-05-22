@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/team1/env"
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/team1/model"
+	"net/http"
+	"io/ioutil"
+	"encoding/json"
 )
 
 const (
@@ -116,10 +119,35 @@ func (p *YahooAuctionProcessor) Process(msgIn *model.Message) *model.Message {
 		}
 	)
 
-	json := Response{}
-	get(url, &json)
+	resp := Response{}
+	getYahooAuctionAPI(url, &resp)
 
 	return &model.Message{
-		Body: "[" + json.ResultSet.Result.Item[0].Title + "] " + json.ResultSet.Result.Item[0].AuctionItemUrl,
+		Body: "[" + resp.ResultSet.Result.Item[0].Title + "] " + resp.ResultSet.Result.Item[0].AuctionItemUrl,
 	}
+}
+
+func getYahooAuctionAPI(url string, out interface{}) error {
+	resp, err := http.Get(url)
+
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+
+	if err != nil {
+		return err
+	}
+
+	stringResp := strings.TrimRight(strings.TrimLeft(string(respBody), "loaded("), ")")
+	respBody = []byte(stringResp)
+
+	err = json.Unmarshal(respBody, out)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

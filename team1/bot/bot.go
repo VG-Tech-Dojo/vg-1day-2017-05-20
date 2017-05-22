@@ -102,8 +102,7 @@ func NewYahooAuctionBot(out chan *model.Message) *Bot{
 
 	//follow ~ で商品を追跡
 	checker := NewRegexpChecker("\\Afollow .*")
-	//processor := &YahooAuctionProcessor{}
-	processor := &KeywordProcessor{}
+	processor := &YahooAuctionProcessor{}
 
 	return &Bot{
 		name:      "yahooAuctionBot",
