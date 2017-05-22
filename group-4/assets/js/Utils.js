@@ -13,7 +13,7 @@ export default class Utils{
     xhr.open("GET",url)
     xhr.send()
 
-    xhr.onload = (data) => {
+    xhr.onload = data => {
       this.omikujiMap = JSON.parse(data.target.response)
     }
   }
@@ -36,7 +36,7 @@ export default class Utils{
   }
 
   get(url,method){
-    this.request(url,method,null,(res) => {
+    this.request(url,method,null, res => {
       let response = JSON.parse(res.target.response)
       this.kujiRender(response.result[response.result.length -1].body)
     })
@@ -48,7 +48,7 @@ export default class Utils{
 
     let kuji_image = document.querySelector(".kuji img")
     kuji_image.src = image_url
-    
+
     this.changeView()
 
     kuji_type == "凶" ? this.doBadAnimation() : this.doAnimation()
