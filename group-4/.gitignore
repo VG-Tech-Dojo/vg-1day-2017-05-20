@@ -2,5 +2,6 @@ vendor/
 server
 tmp/
 
-.idea
+.idea/
 dev.db
+node_modules/
