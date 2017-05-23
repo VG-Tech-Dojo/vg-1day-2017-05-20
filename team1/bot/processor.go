@@ -124,6 +124,7 @@ func (p *YahooAuctionProcessor) Process(msgIn *model.Message) *model.Message {
 
 	return &model.Message{
 		Body: "[" + resp.ResultSet.Result.Item[0].Title + "] " + resp.ResultSet.Result.Item[0].AuctionItemUrl,
+		Image: resp.ResultSet.Result.Item[0].Image,
 	}
 }
 
