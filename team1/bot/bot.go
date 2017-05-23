@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/VG-Tech-Dojo/vg-1day-2017-05-20/team1/model"
+	"time"
 )
 
 type (
@@ -114,7 +115,26 @@ func NewYahooAuctionBot(out chan *model.Message) *Bot{
 }
 
 func (b *Bot) respond(m *model.Message) {
-	message := b.processor.Process(m)
-	b.out <- message
-	fmt.Printf("%s send: %v\n", b.name, message)
+	if b.name == "yahooAuctionBot" {
+		go b.respondYahooAuctionBot(m)
+	} else {
+		message := b.processor.Process(m)
+		b.out <- message
+		fmt.Printf("%s send: %v\n", b.name, message)
+	}
+}
+
+func (b *Bot) respondYahooAuctionBot(m *model.Message) {
+	if b.name == "yahooAuctionBot" {
+		// 30秒間隔でヤフオクから最新の商品を取得する
+		tick := time.Tick(30 * time.Second)
+		for {
+			select {
+			case <- tick:
+				message := b.processor.Process(m)
+				b.out <- message
+				fmt.Printf("%s send: %v\n", b.name, message)
+			}
+		}
+	}
 }
