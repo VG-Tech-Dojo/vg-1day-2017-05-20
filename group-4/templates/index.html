@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <title>おみくじ！</title>
+  <link rel="stylesheet" href="/assets/css/app.css" />
+</head>
+<body>
+
+  <div class="box">
+    <div class="img">
+      <img src="/assets/images/kuji.png" alt="kuji">
+    </div>
+    <input type="text" class="user-input" placeholder="すきな文字をいれてね！">
+  </div>
+
+  <div class="kuji _hidden">
+    <img src="/assets/images/大吉.png" alt="kuji" class="kuji">
+  </div>
+
+  <div class="cracker cracker-left">
+    <img src="/assets/images/cracker.png" alt="cracker image">
+  </div>
+  <div class="cracker cracker-right">
+    <img src="/assets/images/cracker.png" alt="cracker image">
+  </div>
+
+  <button class="reload _hidden" onClick="location.reload()">もう一度遊ぶ！</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="/assets/js/bundle.js"></script>
+</body>
+</html>
