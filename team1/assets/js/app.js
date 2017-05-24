@@ -27,7 +27,7 @@
         </div>
       </div>
       <div class="message-body" v-else>
-        <span style="padding-right:3px; padding-top: 3px;"><img class="manImg" v-bind:src="image" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/a/ac/No_image_available.svg'" width="200" height="200"></img></span>
+        <span style="padding-right:3px; padding-top: 3px;"><img class="manImg" v-bind:src="image" alt=""></img></span>
         <span>{{ displayedBody }}</span>
         <span class="action-button u-pull-right" v-on:click="edit">&#9998;</span>
         <span class="action-button u-pull-right" v-on:click="remove">&#10007;</span>
@@ -44,6 +44,7 @@
               }
               this.spliceMessage(this.id)
           })
+          location.reload();
       },
       edit() {
         this.editing = true
@@ -96,6 +97,7 @@
           .catch(error => {
             console.log(error);
           });
+          location.reload();
       },
       removeMessage(id) {
         return fetch(`/api/messages/${id}`, {
