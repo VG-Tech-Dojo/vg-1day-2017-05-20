@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <title>vg-1day-2017</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css" />
+  <link rel="stylesheet" href="/assets/css/app.css" />
+</head>
+<body>
+  <div id="app" class="container">
+    <div class="row">
+      <h5>メッセージアプリ</h5>
+    </div>
+    <div class="row">
+      <!-- 1-1. ユーザー名を表示しよう -->
+      <div class="message-list" v-for="message in messages">
+        <message
+          :id="message.id"
+          :body="message.body"
+          :image="message.image"
+          :remove-message="removeMessage"
+          :update-message="updateMessage"
+        ></message>
+      </div>
+    </div>
+    <div class="row">
+      <!-- 1-2. ユーザー名を追加しよう -->
+      <textarea class="u-full-width" v-model="newMessage.body" placeholder="メッセージ"></textarea>
+      <button class="button-primary" v-on:click="sendMessage">Send</button>
+      <input type="button" value="Reload" onclick="location.reload();" />
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/whatwg-fetch"></script>
+  <script src="/assets/js/app.js"></script>
+</body>
+</html>
