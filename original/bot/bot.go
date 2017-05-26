@@ -96,6 +96,23 @@ func NewKeywordBot(out chan *model.Message) *Bot {
 	}
 }
 
+// NewGachaBot は"SSレア", "Sレア", "レア", "ノーマル"のいずれかをランダムで返す新しいBotの構造体のポインタを返します
+func NewGachaBot(out chan *model.Message) *Bot {
+	in := make(chan *model.Message)
+
+	checker := NewRegexpChecker("\\Agacha\\z")
+
+	processor := &GachaProcessor{}
+
+	return &Bot{
+		name:      "gachabot",
+		in:        in,
+		out:       out,
+		checker:   checker,
+		processor: processor,
+	}
+}
+
 func (b *Bot) respond(m *model.Message) {
 	message := b.processor.Process(m)
 	b.out <- message
